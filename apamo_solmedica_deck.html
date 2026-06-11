@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APAMO · SOLMÉDICA — Perfil corporativo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>:root{
+  --bg:#080F1C;--bg2:#0B1526;--surface:#0F1D33;--surface-2:#13243E;
+  --line:rgba(150,178,216,.12);--line-strong:rgba(150,178,216,.24);
+  --blue:#5B8AC9;--blue-bright:#9DBEEB;--blue-deep:#2E4D7A;
+  --gold:#E0A526;--gold-bright:#F4CC6E;--teal:#16998A;
+  --text:#E9EFF8;--muted:#8094AE;--muted-dim:#566880;
+  --display:'Space Grotesk',sans-serif;--body:'Manrope',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--body);overflow:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--gold);color:#0B1526}
+a{color:inherit;text-decoration:none}
+svg{display:block}
+
+/* ---------- Deck scaling ---------- */
+.deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:
+  radial-gradient(1100px 700px at 85% -10%, rgba(46,77,122,.35), transparent 60%),
+  radial-gradient(900px 600px at 0% 110%, rgba(224,165,38,.08), transparent 60%), var(--bg);}
+.stage{width:1280px;height:720px;position:relative;transform-origin:center center;flex:none}
+
+/* ---------- Slides ---------- */
+.slide{position:absolute;inset:0;padding:62px 70px 58px;opacity:0;visibility:hidden;
+  transition:opacity .5s ease, transform .5s cubic-bezier(.2,.7,.2,1);transform:translateY(14px) scale(.995);
+  display:flex;flex-direction:column}
+.slide.active{opacity:1;visibility:visible;transform:none}
+.slide.dark{background:transparent}
+
+/* reveal */
+.rv{opacity:0}
+.slide.show .rv{animation:rise .62s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1!important;animation:none!important}}
+
+/* ---------- Common type ---------- */
+.eyebrow{display:inline-flex;align-items:center;gap:11px;font-family:var(--display);font-weight:600;
+  font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+.eyebrow .idx{color:var(--gold);font-variant-numeric:tabular-nums}
+.eyebrow .ln{width:32px;height:1px;background:var(--line-strong)}
+.eyebrow.blue{color:var(--blue-bright)}.eyebrow.gold{color:var(--gold-bright)}
+h2.head{font-family:var(--display);font-weight:700;font-size:40px;line-height:1.04;letter-spacing:-.02em;max-width:21ch}
+.lead{color:var(--muted);font-size:16px;max-width:74ch;margin-top:14px;line-height:1.55}
+
+/* ---------- Top chrome ---------- */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  padding:20px 30px;pointer-events:none}
+.brandmark{display:flex;align-items:center;gap:13px;font-family:var(--display);font-weight:700;letter-spacing:.02em;font-size:16px;pointer-events:auto}
+.brandmark .ap{color:var(--blue-bright)}.brandmark .sep{width:1px;height:18px;background:var(--line-strong)}
+.brandmark .sol{color:var(--text)}.brandmark .sol b{color:var(--gold)}
+.top-right{display:flex;align-items:center;gap:12px;pointer-events:auto}
+.lang{display:inline-flex;align-items:center;position:relative;background:var(--surface);border:1px solid var(--line-strong);
+  border-radius:999px;padding:4px;cursor:pointer;user-select:none}
+.lang .knob{position:absolute;top:4px;left:4px;height:calc(100% - 8px);width:calc(50% - 4px);
+  background:linear-gradient(135deg,var(--gold),#c98c14);border-radius:999px;
+  transition:transform .34s cubic-bezier(.65,.05,.36,1);box-shadow:0 4px 14px rgba(224,165,38,.4)}
+.lang[data-lang="en"] .knob{transform:translateX(100%)}
+.lang button{position:relative;z-index:2;background:none;border:0;cursor:pointer;font-family:var(--display);
+  font-weight:600;font-size:12px;letter-spacing:.08em;color:var(--muted);padding:5px 15px;transition:color .3s}
+.lang[data-lang="es"] button.es,.lang[data-lang="en"] button.en{color:#0B1526}
+.fs-btn{width:34px;height:34px;border-radius:9px;background:var(--surface);border:1px solid var(--line-strong);
+  cursor:pointer;display:flex;align-items:center;justify-content:center}
+.fs-btn svg{width:17px;height:17px;stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:round}
+.fs-btn:hover svg{stroke:var(--text)}
+
+/* ---------- Bottom nav ---------- */
+.nav{position:fixed;bottom:20px;right:30px;z-index:50;display:flex;align-items:center;gap:12px}
+.nav-btn{width:40px;height:40px;border-radius:50%;background:var(--surface);border:1px solid var(--line-strong);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s}
+.nav-btn:hover{background:var(--surface-2);border-color:var(--blue)}
+.nav-btn svg{width:20px;height:20px;stroke:var(--text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nav-btn:disabled{opacity:.3;cursor:default}
+.counter{font-family:var(--display);font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums;min-width:54px;text-align:center}
+.counter #cur{color:var(--text)}.counter .c-sep{margin:0 5px;color:var(--muted-dim)}
+.progress{position:fixed;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,.05);z-index:50}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--blue),var(--gold));transition:width .5s ease;width:6.6%}
+
+/* ================= SLIDE 1 — title ================= */
+.s-title{justify-content:center}
+.s-title .t-tag{font-family:var(--display);font-weight:500;font-size:13px;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--blue-bright);display:flex;align-items:center;gap:13px;margin-bottom:26px}
+.s-title .t-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.s-title h1{font-family:var(--display);font-weight:700;font-size:68px;line-height:.98;letter-spacing:-.03em;max-width:16ch}
+.s-title .t-sub{margin-top:24px;max-width:60ch;font-size:18px;color:var(--muted);line-height:1.55}
+.t-chips{display:flex;gap:16px;margin-top:38px}
+.t-chip{width:300px;background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:18px 22px;position:relative;overflow:hidden}
+.t-chip::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px}
+.t-chip.pub::before{background:linear-gradient(var(--blue),var(--blue-deep))}
+.t-chip.priv::before{background:linear-gradient(var(--gold),#a9760d)}
+.t-chip .nm{font-family:var(--display);font-weight:700;font-size:19px}
+.t-chip.pub .nm{color:var(--blue-bright)}.t-chip.priv .nm{color:var(--gold-bright)}
+.t-chip .rl{margin-top:6px;font-size:13px;color:var(--muted)}
+.t-chip .yr{position:absolute;top:18px;right:20px;font-family:var(--display);font-size:12px;color:var(--muted-dim)}
+.s-title .kicker{position:absolute;bottom:58px;left:70px;font-family:var(--display);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-dim)}
+
+/* ================= SLIDE 2 — who ================= */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:26px;flex:1}
+.duo .col{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:30px 32px;display:flex;flex-direction:column}
+.duo .col h3{font-family:var(--display);font-weight:700;font-size:26px;letter-spacing:.02em}
+.duo .col.a h3{color:var(--blue-bright)}.duo .col.b h3{color:var(--gold-bright)}
+.duo .badge{display:inline-block;margin-top:10px;font-family:var(--display);font-size:11px;letter-spacing:.13em;text-transform:uppercase;padding:5px 12px;border-radius:999px}
+.duo .col.a .badge{background:rgba(91,138,201,.14);color:var(--blue-bright)}
+.duo .col.b .badge{background:rgba(224,165,38,.14);color:var(--gold-bright)}
+.duo .role{margin-top:18px;font-size:16px;font-weight:700;color:var(--text)}
+.duo ul{list-style:none;margin-top:14px;display:flex;flex-direction:column;gap:13px}
+.duo li{position:relative;padding-left:22px;font-size:15px;color:var(--muted);line-height:1.5}
+.duo li::before{content:"";position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:2px;transform:rotate(45deg)}
+.duo .col.a li::before{background:var(--blue)}.duo .col.b li::before{background:var(--gold)}
+
+/* ================= SLIDE 3 — timeline ================= */
+.timeline{display:flex;gap:0;margin-top:30px;flex:1;align-items:stretch}
+.tl-node{flex:1;position:relative;padding:0 16px;display:flex;flex-direction:column}
+.tl-node::before{content:"";position:absolute;top:30px;left:0;right:0;height:2px;background:var(--line-strong)}
+.tl-node:first-child::before{left:50%}.tl-node:last-child::before{right:50%}
+.tl-dot{position:relative;z-index:2;width:18px;height:18px;border-radius:50%;background:var(--gold);
+  margin:22px auto 0;box-shadow:0 0 0 5px rgba(224,165,38,.16)}
+.tl-node:nth-child(odd) .tl-dot{background:var(--blue-bright);box-shadow:0 0 0 5px rgba(157,190,235,.16)}
+.tl-year{font-family:var(--display);font-weight:700;font-size:22px;text-align:center;margin-top:18px;color:var(--gold-bright)}
+.tl-node:nth-child(odd) .tl-year{color:var(--blue-bright)}
+.tl-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 18px;margin-top:14px;flex:1}
+.tl-card h4{font-family:var(--display);font-weight:600;font-size:15.5px;line-height:1.2;margin-bottom:9px}
+.tl-card p{font-size:12.5px;color:var(--muted);line-height:1.5}
+
+/* ================= SLIDE 4 — coverage map ================= */
+.cov-wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:30px;margin-top:18px;flex:1;align-items:center}
+.map-panel{position:relative;height:100%;display:flex;flex-direction:column;justify-content:center}
+.es-map{width:100%;height:auto;max-height:430px;overflow:visible;filter:drop-shadow(0 18px 30px rgba(0,0,0,.4))}
+.es-map .dept{stroke:#0A1322;stroke-width:1.6;opacity:0;transition:opacity .5s ease}
+.slide.show .es-map .dept{opacity:.93}
+.es-map .r-occ{fill:var(--teal)}.es-map .r-cen{fill:#2C5AA0}.es-map .r-par{fill:var(--gold)}.es-map .r-ori{fill:#5E89B5}
+.es-map .pin{opacity:0}
+.slide.show .es-map .pin{animation:pindrop .5s cubic-bezier(.3,1.4,.5,1) both;animation-delay:var(--pd)}
+@keyframes pindrop{0%{opacity:0;transform:translateY(-18px) scale(.2)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.es-map .pin-dot{fill:#fff;stroke:#0A1322;stroke-width:2}
+.es-map .pin-pulse{fill:#fff;opacity:.25}
+.slide.show .es-map .pin-pulse{animation:pulse 2.6s ease-out infinite;animation-delay:var(--pd)}
+@keyframes pulse{0%{transform:scale(.5);opacity:.4}70%,100%{transform:scale(1.5);opacity:0}}
+.map-legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;justify-content:center}
+.lg{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
+.lg i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.lg.occ i{background:var(--teal)}.lg.cen i{background:#2C5AA0}.lg.par i{background:var(--gold)}.lg.ori i{background:#5E89B5}
+.cov-side{display:flex;flex-direction:column}
+.cov-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.cstat{background:var(--surface);padding:16px 18px}
+.cstat .num{font-family:var(--display);font-weight:700;font-size:34px;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.cstat:nth-child(odd) .num{color:var(--blue-bright)}.cstat:nth-child(even) .num{color:var(--gold-bright)}
+.cstat .lab{margin-top:8px;font-weight:700;font-size:13px}
+.cstat .desc{margin-top:2px;font-size:11px;color:var(--muted)}
+
+/* ================= SLIDE 5 — model ================= */
+.model{display:grid;grid-template-columns:1fr 64px 1fr;margin-top:26px;flex:1}
+.channel{background:var(--surface);border:1px solid var(--line);padding:28px 30px;display:flex;flex-direction:column;justify-content:center}
+.channel.pub{border-radius:16px 0 0 16px;border-right:0}.channel.priv{border-radius:0 16px 16px 0;border-left:0}
+.channel .ttl{font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.14em;text-transform:uppercase}
+.channel.pub .ttl{color:var(--blue-bright)}.channel.priv .ttl{color:var(--gold-bright)}
+.channel ul{list-style:none;margin-top:20px;display:flex;flex-direction:column;gap:16px}
+.channel li{font-size:15px;color:var(--muted);padding-left:26px;position:relative}
+.channel li::before{content:"→";position:absolute;left:0;font-family:var(--display)}
+.channel.pub li::before{color:var(--blue)}.channel.priv li::before{color:var(--gold)}
+.plus{display:flex;align-items:center;justify-content:center;background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.plus span{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--blue-deep),#1a2e4d);
+  border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:24px}
+.cover-note{margin-top:20px;text-align:center;font-family:var(--display);font-size:15px;color:var(--muted)}
+.cover-note b{color:var(--gold-bright)}
+
+/* ================= SLIDES 6/7 — tiers ================= */
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px;flex:1}
+.tier{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px;display:flex;flex-direction:column}
+.tier .lvl{font-family:var(--display);font-weight:600;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.tier .big{font-family:var(--display);font-weight:700;font-size:40px;line-height:1;margin:12px 0 2px;font-variant-numeric:tabular-nums}
+.tier .big.sm{font-size:24px;margin-top:16px}
+.tier .sub{font-weight:700;font-size:16px}
+.tier .txt{margin-top:11px;font-size:13.5px;color:var(--muted);flex-grow:1;line-height:1.5}
+.tier .exlab{margin-top:16px;font-family:var(--display);font-size:10px;letter-spacing:.16em;color:var(--muted-dim);text-transform:uppercase}
+.tier .ex{margin-top:9px;font-size:12.5px;color:var(--muted);line-height:1.6;border-top:1px solid var(--line);padding-top:11px}
+.tier.blue .big,.tier.blue .lvl{color:var(--blue-bright)}
+.tier.gold .big,.tier.gold .lvl{color:var(--gold-bright)}
+
+/* ================= SLIDE 8 — brands ================= */
+.brands{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:26px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;flex:1}
+.bcard{background:var(--surface);padding:22px 24px;display:flex;flex-direction:column;justify-content:center}
+.bcard .bn{font-family:var(--display);font-weight:700;font-size:20px}
+.bcard .bc{margin-top:7px;font-size:13px;color:var(--muted)}
+.bcard .bc .flag{color:var(--gold-bright);font-weight:600}
+
+/* ================= SLIDE 9 — lines ================= */
+.lines{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px;flex:1}
+.line{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px;display:flex;gap:18px;align-items:flex-start}
+.line .ic{flex-shrink:0;width:44px;height:44px;border-radius:11px;background:linear-gradient(135deg,rgba(91,138,201,.2),rgba(224,165,38,.12));
+  border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center}
+.line .ic svg{width:21px;height:21px;stroke:var(--blue-bright);fill:none;stroke-width:1.7}
+.line h4{font-family:var(--display);font-weight:600;font-size:16.5px}
+.line p{margin-top:6px;font-size:13px;color:var(--muted);line-height:1.45}
+.line .vendors{margin-top:9px;font-family:var(--display);font-size:11.5px;letter-spacing:.02em;color:var(--gold-bright)}
+
+/* ================= SLIDE 10 — strengths ================= */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px;flex:1}
+.feat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px;display:flex;flex-direction:column}
+.feat .fn{font-family:var(--display);font-size:13px;color:var(--gold);font-variant-numeric:tabular-nums;letter-spacing:.08em}
+.feat h4{font-family:var(--display);font-weight:600;font-size:18px;margin:12px 0 9px}
+.feat p{font-size:13.5px;color:var(--muted);line-height:1.5}
+
+/* ================= SLIDE 11 — value prop ================= */
+.vp{background:linear-gradient(135deg,var(--surface),var(--bg2));border:1px solid var(--line);border-radius:20px;
+  padding:40px 44px;margin-top:24px;flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+.vp::after{content:"";position:absolute;top:-90px;right:-70px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(224,165,38,.12),transparent 70%)}
+.vp h3{font-family:var(--display);font-weight:700;font-size:32px;line-height:1.08;letter-spacing:-.01em;max-width:22ch;position:relative}
+.vp h3 em{font-style:normal;color:var(--gold-bright)}
+.vp .vlead{margin-top:16px;color:var(--muted);max-width:66ch;position:relative;font-size:15px;line-height:1.55}
+.vp .vgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:34px;position:relative}
+.vp .vitem h5{font-family:var(--display);font-weight:600;font-size:15px;padding-top:14px;border-top:2px solid var(--blue);display:inline-block}
+.vp .vitem:nth-child(even) h5{border-color:var(--gold)}
+.vp .vitem p{margin-top:8px;font-size:12.5px;color:var(--muted);line-height:1.5}
+
+/* ================= SLIDE 12 — team / org ================= */
+.org-head{display:flex;justify-content:space-between;align-items:flex-start}
+.hc-badge{text-align:right;background:var(--surface);border:1px solid var(--line-strong);border-radius:12px;padding:10px 18px}
+.hc-badge .hc-n{font-family:var(--display);font-weight:700;font-size:28px;line-height:1;color:var(--gold-bright);font-variant-numeric:tabular-nums}
+.hc-badge .hc-l{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.org{margin-top:10px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
+.org-row{display:flex;justify-content:center}
+.obox{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:10px 16px;text-align:center;min-width:150px}
+.obox .ot{font-family:var(--display);font-weight:600;font-size:14px;line-height:1.15}
+.obox .os{font-size:10.5px;color:var(--muted);margin-top:3px}
+.obox.sm{min-width:0;width:100%;padding:9px 12px}
+.obox.sm .ot{font-size:12.5px}
+.obox.lead-blue{border-color:rgba(91,138,201,.5)}.obox.lead-gold{border-color:rgba(224,165,38,.5)}
+.obox.ceo{background:linear-gradient(135deg,var(--blue-deep),#16294a);border-color:var(--blue);min-width:210px;padding:12px 22px}
+.obox.ceo .ot{font-size:16px;color:#fff}
+.connector{width:2px;height:18px;background:var(--line-strong);margin:0 auto}
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;width:100%;position:relative}
+.pillars::before{content:"";position:absolute;top:-18px;left:16.6%;right:16.6%;height:2px;background:var(--line-strong)}
+.pillar{display:flex;flex-direction:column;align-items:center;gap:12px;position:relative}
+.pillar::before{content:"";position:absolute;top:-18px;width:2px;height:18px;background:var(--line-strong)}
+.pillar>.obox{position:relative}
+.psub{display:flex;gap:10px;width:100%}
+.psub .obox{flex:1}
+.team-mid-label{font-family:var(--display);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-dim);text-align:center;margin:16px 0 0}
+.commercial{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;margin-top:12px}
+.comm-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 18px;border-top:2px solid var(--blue)}
+.comm-card.priv{border-top-color:var(--gold)}
+.comm-card .cc-h{font-family:var(--display);font-weight:700;font-size:15px}
+.comm-card.pub .cc-h{color:var(--blue-bright)}.comm-card.priv .cc-h{color:var(--gold-bright)}
+.cc-chips{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.gchip{font-size:11px;color:var(--muted);background:rgba(150,178,216,.08);border-radius:6px;padding:5px 10px;font-family:var(--display)}
+.gchip b{color:var(--text);font-weight:700}
+.org-foot{margin-top:12px;font-size:11px;color:var(--muted-dim);font-style:italic;text-align:center}
+
+/* ================= SLIDE 13 — values + carousel ================= */
+.values-row{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;margin-top:24px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.val{background:var(--surface);padding:18px 16px}
+.val .vt{font-family:var(--display);font-weight:600;font-size:16px;color:var(--blue-bright)}
+.val:nth-child(even) .vt{color:var(--gold-bright)}
+.val p{margin-top:8px;font-size:12px;color:var(--muted);line-height:1.45}
+.carousel-label{font-family:var(--display);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-dim);margin:0 0 4px}
+.clients-block{flex:1;display:flex;flex-direction:column;justify-content:flex-start;gap:18px;overflow:hidden;margin-top:42px}
+.carousel{display:flex;flex-direction:column;gap:14px;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.marquee{display:flex;gap:12px;width:max-content;will-change:transform}
+.marquee.a{animation:scrollL 46s linear infinite}
+.marquee.b{animation:scrollR 52s linear infinite}
+.marquee.c{animation:scrollL 58s linear infinite}
+@keyframes scrollL{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes scrollR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.cchip{flex:none;font-family:var(--display);font-size:13.5px;letter-spacing:.01em;color:var(--muted);
+  background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:9px 18px;white-space:nowrap}
+.cchip:hover{color:var(--text);border-color:var(--line-strong)}
+
+/* ================= SLIDE 14 — vision / expansion ================= */
+.transition{display:grid;grid-template-columns:1fr 180px 1fr;align-items:center;gap:8px;margin-top:18px}
+.vcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.vcard.from{border-top:2px solid var(--blue)}.vcard.to{border-top:2px solid var(--gold)}
+.vcard .vh{font-family:var(--display);font-weight:700;font-size:16px}
+.vcard.from .vh{color:var(--blue-bright)}.vcard.to .vh{color:var(--gold-bright)}
+.vcard p{margin-top:8px;font-size:12.5px;color:var(--muted);line-height:1.45}
+.trans-mid{display:flex;align-items:center;justify-content:center}
+.trans-svg{width:100%;height:auto;overflow:visible}
+.trans-svg .t-line{stroke:var(--line-strong);stroke-width:2}
+.trans-svg .t-flow{stroke:var(--gold);stroke-width:2;stroke-dasharray:6 10;opacity:.9}
+.slide.show .trans-svg .t-flow{animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-16}}
+.trans-svg .t-arrow{fill:none;stroke:var(--gold-bright);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.trans-svg .t-d-blue{fill:var(--blue-bright)}
+.trans-svg .t-d-gold{fill:var(--gold-bright)}
+.vision-caption{display:flex;align-items:center;gap:16px;margin-top:14px;font-size:13px;color:var(--muted)}
+.vision-caption b{font-family:var(--display);color:var(--text);font-weight:700}
+.vision-caption .vc-sep{width:4px;height:4px;border-radius:50%;background:var(--muted-dim)}
+.roadmap{margin-top:16px;flex:1;display:flex;flex-direction:column;justify-content:center}
+.rm-label{font-family:var(--display);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.rm-track{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.rm-step{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:13px 13px}
+.rm-step.home{border-color:rgba(91,138,201,.4);background:linear-gradient(160deg,rgba(91,138,201,.1),var(--bg2))}
+.rm-step .yr{font-family:var(--display);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--blue-bright);margin-bottom:6px}
+.rm-step .cty{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:600;font-size:15px}
+.rm-step .cdot{width:9px;height:9px;border-radius:50%;background:var(--gold)}
+.rm-step.home .cdot{background:var(--blue-bright)}
+.rm-step .rx{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.4;min-height:30px}
+.rstats{margin-top:10px;border-top:1px solid var(--line);padding-top:9px;display:flex;flex-direction:column;gap:5px}
+.rstat{display:flex;justify-content:space-between;align-items:baseline;font-size:11px}
+.rstat .rl{color:var(--muted-dim)}
+.rstat .rv2{font-family:var(--display);font-weight:600;color:var(--text);font-variant-numeric:tabular-nums}
+.rm-note{margin-top:11px;font-size:10.5px;color:var(--muted-dim);font-style:italic}
+
+/* ================= SLIDE 15 — contact ================= */
+.s-contact{justify-content:center;background:linear-gradient(135deg,var(--bg2),var(--bg))}
+.s-contact .ctitle{font-family:var(--display);font-weight:700;font-size:38px;line-height:1.12;letter-spacing:-.02em;max-width:21ch}
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:42px}
+.cblock .clab{font-family:var(--display);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted-dim)}
+.cblock .cval{margin-top:11px;font-size:16px;font-weight:600;line-height:1.5}
+.cblock.phone .cval{font-family:var(--display);font-size:22px;color:var(--blue-bright)}
+.cblock .cval a:hover{color:var(--gold-bright)}
+.c-thanks{margin-top:48px;padding-top:30px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.c-thanks .ty{font-family:var(--display);font-size:22px;font-weight:500;color:var(--muted)}
+.c-thanks .ty b{color:var(--text);font-weight:700}
+
+/* hint for very small screens */
+.rotate-hint{display:none}
+
+/* ================= SLIDE 9 — cimientos (merged) ================= */
+.cimientos{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px;flex:1}
+.cim-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px;display:flex;flex-direction:column}
+.cim-ic{width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,rgba(91,138,201,.2),rgba(224,165,38,.12));border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;margin-bottom:13px}
+.cim-ic svg{width:21px;height:21px;stroke:var(--gold-bright);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.cim-card h4{font-family:var(--display);font-weight:600;font-size:15.5px;margin-bottom:8px;line-height:1.2}
+.cim-card p{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* ================= SLIDE 11 — vision 3-phase roadmap ================= */
+.rm-phases{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.rm-phase{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:11px}
+.rm-phase.home{border-color:rgba(91,138,201,.4);background:linear-gradient(160deg,rgba(91,138,201,.1),var(--bg2))}
+.ph-head{display:flex;flex-direction:column;gap:3px;border-bottom:1px solid var(--line);padding-bottom:9px}
+.ph-head .yr{font-family:var(--display);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.rm-phase.home .ph-head .yr{color:var(--blue-bright)}
+.ph-x{font-size:11px;color:var(--muted);line-height:1.35}
+.ctry .cty{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:600;font-size:14px;margin-bottom:7px}
+.ctry .cdot{width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.rm-phase.home .cdot{background:var(--blue-bright)}
+.cstats2{display:grid;grid-template-columns:1fr 1fr;gap:4px 14px}
+.cs2{display:flex;justify-content:space-between;align-items:baseline;font-size:10.5px;color:var(--muted-dim)}
+.cs2 b{font-family:var(--display);font-weight:600;color:var(--text);font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+  <div class="stage" id="stage">
+    <!-- ===== SLIDE 1 — TITLE ===== -->
+<section class="slide s-title dark" data-slide="0">
+  <div class="t-tag rv"><span data-k="s1_eyebrow"></span><span class="dot"></span></div>
+  <h1 class="rv" data-k="s1_title"></h1>
+  <p class="t-sub rv" data-k="s1_sub"></p>
+  <div class="t-chips rv">
+    <div class="t-chip pub"><div class="yr">2005</div><div class="nm">APAMO</div><div class="rl" data-k="s1_pub"></div></div>
+    <div class="t-chip priv"><div class="yr">2012</div><div class="nm">SOLMÉDICA</div><div class="rl" data-k="s1_priv"></div></div>
+  </div>
+  <div class="kicker rv"><span data-k="s1_kicker"></span> · grupoapamo.net · solmedicasv.com</div>
+</section>
+
+<!-- ===== SLIDE 2 — MODELO DE DOBLE COBERTURA (merged who + model) ===== -->
+<section class="slide" data-slide="1">
+  <div class="rv"><div class="eyebrow"><span class="idx">02</span><span class="ln"></span><span data-k="s2_eyebrow"></span></div>
+  <h2 class="head" data-k="s2_title"></h2>
+  <p class="lead" data-k="s2_lead"></p></div>
+  <div class="duo">
+    <div class="col a rv">
+      <h3>APAMO</h3><span class="badge" data-k="s2_a_badge"></span>
+      <div class="role" data-k="s2_a_role"></div>
+      <ul><li data-k="s5_pub_1"></li><li data-k="s5_pub_2"></li><li data-k="s5_pub_3"></li><li data-k="s5_pub_4"></li></ul>
+    </div>
+    <div class="col b rv">
+      <h3>SOLMÉDICA</h3><span class="badge" data-k="s2_b_badge"></span>
+      <div class="role" data-k="s2_b_role"></div>
+      <ul><li data-k="s5_priv_1"></li><li data-k="s5_priv_2"></li><li data-k="s5_priv_3"></li><li data-k="s5_priv_4"></li></ul>
+    </div>
+  </div>
+  <p class="cover-note rv"><b>100%</b> · <span data-k="s5_note"></span></p>
+</section>
+
+<!-- ===== SLIDE 3 — HISTORY ===== -->
+<section class="slide" data-slide="2">
+  <div class="rv"><div class="eyebrow"><span class="idx">03</span><span class="ln"></span><span data-k="s3_eyebrow"></span></div>
+  <h2 class="head" data-k="s3_title"></h2>
+  <p class="lead" data-k="s3_lead"></p></div>
+  <div class="timeline rv">
+    <div class="tl-node"><div class="tl-dot"></div><div class="tl-year" data-k="s3_1_y"></div><div class="tl-card"><h4 data-k="s3_1_t"></h4><p data-k="s3_1_x"></p></div></div>
+    <div class="tl-node"><div class="tl-dot"></div><div class="tl-year" data-k="s3_2_y"></div><div class="tl-card"><h4 data-k="s3_2_t"></h4><p data-k="s3_2_x"></p></div></div>
+    <div class="tl-node"><div class="tl-dot"></div><div class="tl-year" data-k="s3_3_y"></div><div class="tl-card"><h4 data-k="s3_3_t"></h4><p data-k="s3_3_x"></p></div></div>
+    <div class="tl-node"><div class="tl-dot"></div><div class="tl-year" data-k="s3_4_y"></div><div class="tl-card"><h4 data-k="s3_4_t"></h4><p data-k="s3_4_x"></p></div></div>
+    <div class="tl-node"><div class="tl-dot"></div><div class="tl-year" data-k="s3_5_y"></div><div class="tl-card"><h4 data-k="s3_5_t"></h4><p data-k="s3_5_x"></p></div></div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 4 — COVERAGE (MAP) ===== -->
+<section class="slide" data-slide="3">
+  <div class="rv"><div class="eyebrow"><span class="idx">04</span><span class="ln"></span><span data-k="s4_eyebrow"></span></div>
+  <h2 class="head" data-k="s4_title"></h2></div>
+  <div class="cov-wrap">
+    <div class="map-panel rv">
+      <svg class="es-map" viewBox="0 0 1032.0 579.2" xmlns="http://www.w3.org/2000/svg"><g class="depts"><path class="dept r-occ" d="M22.8,319.6L16.2,292.0L19.2,271.7L27.4,260.5L43.8,250.3L53.9,232.2L60.0,226.8L112.9,187.2L131.2,180.3L144.8,181.8L161.6,192.6L167.6,189.4L167.5,186.3L180.6,194.7L189.0,208.1L179.5,244.1L156.1,252.5L159.1,273.8L149.7,290.6L153.6,304.0L147.5,313.7L137.8,341.6L117.3,341.6L107.3,331.2L100.3,329.0L93.2,332.2L82.6,347.8L22.8,319.6Z" data-dept="Ahuachapán"/><path class="dept r-occ" d="M167.5,186.3L164.8,180.1L165.6,173.4L183.2,142.1L191.5,133.1L212.8,120.1L257.1,109.5L259.8,106.8L259.7,100.2L251.3,94.1L249.3,82.8L245.7,76.6L240.4,73.1L231.8,71.9L229.3,65.9L238.5,55.2L232.5,41.3L235.2,34.5L241.0,30.2L247.1,30.7L251.6,35.3L252.8,43.1L268.6,26.8L276.0,23.6L291.8,28.7L298.3,27.3L311.9,16.0L312.5,24.2L315.0,20.0L326.9,28.7L333.4,29.7L351.9,47.5L356.5,55.5L374.6,68.1L367.6,92.1L364.0,96.1L348.6,102.4L348.8,117.2L340.0,130.3L325.1,135.5L316.7,147.8L307.9,147.6L299.9,174.9L301.2,184.1L305.8,188.3L312.0,189.5L323.0,188.1L316.8,228.6L308.9,231.3L304.2,237.5L298.4,238.9L296.9,269.4L289.7,289.2L287.8,301.0L262.8,295.5L259.1,287.5L238.1,272.3L234.4,275.7L232.2,285.9L229.8,287.6L223.6,287.4L218.1,280.2L214.2,278.9L217.8,267.6L208.7,254.9L197.6,245.6L189.1,246.5L179.5,244.1L189.0,208.1L179.9,193.8L167.5,186.3Z" data-dept="Santa Ana"/><path class="dept r-cen" d="M333.4,29.7L349.3,32.3L362.2,38.4L383.2,42.9L393.7,50.3L412.8,56.0L425.9,37.6L432.0,37.0L438.4,46.0L437.3,58.7L442.0,62.8L456.1,64.4L462.7,67.7L468.9,89.9L483.2,102.4L486.9,108.7L490.4,124.0L494.0,126.6L508.7,120.4L515.2,120.5L525.4,127.1L534.0,138.0L540.2,150.7L542.9,162.7L568.3,163.0L581.1,158.0L584.0,162.9L581.0,183.1L587.5,187.3L598.2,189.2L603.3,194.6L604.0,200.4L585.0,203.3L565.6,216.1L534.0,226.8L505.4,227.5L492.2,224.3L484.7,224.9L474.3,219.7L469.1,212.4L468.2,204.6L455.8,188.5L445.9,180.9L428.0,173.3L406.6,182.2L396.1,176.4L393.5,181.6L379.1,177.8L368.9,183.6L342.2,174.9L326.1,182.3L323.0,188.1L305.8,188.3L301.2,184.1L299.9,174.9L307.9,147.6L316.7,147.8L325.1,135.5L340.0,130.3L348.8,117.2L348.6,102.4L364.0,96.1L367.6,92.1L374.6,68.1L356.5,55.5L351.9,47.5L333.4,29.7Z" data-dept="Chalatenango"/><path class="dept r-par" d="M585.0,203.3L627.5,199.2L658.8,209.3L677.0,210.6L684.7,216.0L681.9,218.6L684.4,224.2L681.9,240.6L687.5,255.8L687.8,262.7L681.6,271.0L684.2,276.3L683.6,281.3L676.2,288.4L677.1,294.3L669.5,307.7L662.8,312.2L648.5,309.9L644.2,303.4L622.5,291.8L593.4,290.0L585.5,285.2L577.8,291.2L569.7,291.0L552.9,298.0L540.7,296.4L538.2,311.4L520.2,305.4L510.4,291.8L505.0,276.8L489.0,258.1L486.0,251.7L487.6,247.4L497.6,240.0L505.4,227.5L534.0,226.8L565.6,216.1L585.0,203.3Z" data-dept="Cabañas"/><path class="dept r-ori" d="M792.2,208.4L816.0,211.7L848.4,209.7L853.2,213.7L859.2,229.4L879.5,251.7L883.0,262.2L908.9,251.3L912.8,278.6L911.2,305.8L915.6,315.8L914.2,333.8L902.3,369.8L901.6,377.8L885.8,396.1L872.6,394.9L851.4,399.9L839.8,389.6L837.5,378.8L832.6,372.7L815.1,373.5L805.1,377.5L807.1,368.8L782.2,339.0L782.0,326.3L804.1,310.2L801.3,303.4L785.7,292.7L781.2,286.8L781.6,279.5L786.6,273.5L787.7,267.8L776.1,239.8L780.4,233.8L791.7,231.7L793.7,225.9L788.4,219.8L788.0,211.4L792.2,208.4Z" data-dept="Morazán"/><path class="dept r-ori" d="M754.6,254.3L757.5,248.9L771.4,245.4L776.1,239.8L783.2,254.4L787.7,270.3L781.6,279.5L781.9,289.0L801.3,303.4L804.1,310.2L782.0,326.3L782.2,339.0L807.1,368.8L804.4,377.0L815.1,373.5L832.6,372.7L837.5,378.8L839.8,389.6L851.4,399.9L872.6,394.9L885.8,396.1L882.2,405.1L884.0,425.5L877.2,432.3L876.3,436.7L877.6,455.1L883.4,466.5L878.6,503.9L872.2,522.7L863.3,521.4L855.4,516.4L851.5,557.2L842.8,557.8L817.5,528.3L801.7,529.1L801.1,524.7L804.4,516.5L798.2,510.9L798.0,503.4L795.5,499.3L781.9,502.0L774.1,498.3L766.7,490.5L754.5,487.9L746.9,481.7L740.5,470.4L737.3,453.0L731.8,451.5L729.1,433.9L730.2,429.5L734.6,430.5L735.6,421.7L739.7,415.8L738.4,400.2L732.3,383.2L739.8,374.7L737.2,363.7L739.4,354.5L722.2,350.2L709.9,336.3L688.1,337.9L670.6,317.7L669.5,307.6L677.1,294.3L676.2,288.4L683.6,281.3L684.2,276.3L681.6,271.0L684.1,268.7L695.2,268.1L710.4,260.2L727.0,256.5L740.6,259.7L742.7,251.8L754.6,254.3Z" data-dept="San Miguel"/><path class="dept r-ori" d="M964.5,241.2L968.4,244.2L975.8,260.5L986.2,265.4L1004.4,281.1L1011.7,284.1L997.6,316.5L1000.2,323.5L990.5,337.2L988.4,368.3L978.5,392.3L976.1,404.0L980.4,413.8L984.6,415.3L993.4,412.4L999.4,414.7L1004.7,423.5L1004.5,434.7L997.3,442.8L964.8,457.7L961.3,455.7L956.1,443.1L944.5,463.4L941.4,475.3L953.9,482.4L975.4,500.9L976.1,508.6L972.7,517.7L964.5,524.1L933.8,539.7L925.5,546.3L924.0,553.1L933.5,559.8L918.9,563.2L851.5,557.2L855.4,516.4L863.3,521.4L872.2,522.7L878.6,503.9L883.4,466.5L877.6,455.1L876.3,436.7L877.2,432.3L884.0,425.5L883.1,399.8L901.6,377.8L902.3,369.8L914.2,333.8L915.6,315.8L911.2,305.8L912.8,278.6L908.9,251.3L920.1,256.6L930.6,250.4L946.7,252.1L958.3,241.4L964.5,241.2Z" data-dept="La Unión"/><path class="dept r-occ" d="M224.7,412.4L195.6,403.2L181.9,406.1L142.7,406.6L136.4,402.2L130.6,376.8L82.6,347.8L93.2,332.2L100.3,329.0L107.3,331.2L117.3,341.6L137.8,341.6L147.5,313.7L153.6,304.0L149.7,290.6L159.1,273.8L155.5,257.0L158.1,250.5L179.5,244.1L189.1,246.5L197.6,245.6L208.7,254.9L215.9,264.6L218.1,271.0L213.7,278.0L223.6,287.4L232.2,285.9L233.0,278.7L238.1,272.3L259.1,287.5L262.8,295.5L287.8,301.0L295.6,305.2L295.6,309.0L291.6,313.3L282.9,318.7L274.1,328.1L266.1,331.1L263.1,340.1L262.9,355.7L248.1,372.4L245.8,383.1L232.4,396.1L224.7,412.4Z" data-dept="Sonsonate"/><path class="dept r-cen" d="M420.3,454.4L400.6,442.2L372.5,429.8L342.2,422.5L317.4,420.0L258.7,420.5L224.7,412.4L232.4,396.1L245.8,383.1L248.1,372.4L262.9,355.7L263.1,340.1L266.1,331.1L274.1,328.1L295.6,309.0L295.1,304.3L287.8,301.0L289.7,289.2L296.9,269.4L298.4,238.9L304.2,237.5L308.9,231.3L316.8,228.6L323.0,188.1L326.1,182.3L342.2,174.9L366.0,183.2L363.5,210.5L372.6,224.8L379.6,227.9L388.4,228.1L395.2,232.6L393.5,239.0L388.3,240.2L385.2,267.7L377.9,274.9L372.8,303.3L368.0,316.8L373.2,320.7L373.1,329.0L379.8,341.9L387.4,346.2L392.3,353.1L389.9,360.6L394.5,364.1L392.2,368.9L392.6,390.5L389.0,405.8L398.6,422.4L413.7,421.2L416.7,422.6L419.4,431.3L429.8,435.0L420.3,454.4Z" data-dept="La Libertad"/><path class="dept r-par" d="M545.9,517.5L449.6,472.4L420.3,454.4L430.2,436.2L428.5,433.5L419.4,431.3L416.7,422.6L423.9,410.4L428.4,395.2L422.8,375.5L426.8,373.4L437.2,376.0L466.6,344.5L499.7,357.5L519.3,348.9L522.4,357.2L523.3,376.0L537.0,372.9L543.9,374.3L555.1,397.5L549.3,427.3L549.8,436.6L550.9,440.8L562.6,450.7L566.7,458.2L560.8,469.9L562.5,491.0L548.1,501.3L545.9,517.5Z" data-dept="La Paz"/><path class="dept r-par" d="M552.1,520.4L545.9,517.5L546.9,504.6L549.4,499.6L562.5,491.0L560.8,469.9L566.7,458.2L562.6,450.7L550.9,440.8L549.8,436.6L549.3,427.3L555.4,398.7L543.9,374.3L537.0,372.9L523.3,376.0L522.4,357.2L519.3,348.9L529.2,337.6L538.2,311.4L538.8,299.2L540.7,296.4L550.0,298.5L572.4,290.3L577.8,291.2L585.5,285.2L593.4,290.0L622.5,291.8L644.2,303.4L648.5,309.9L662.8,312.2L669.5,307.7L670.6,317.7L688.1,337.9L662.1,356.9L653.7,372.9L645.3,378.1L636.2,376.1L623.8,393.5L617.0,394.6L614.6,398.0L610.2,423.5L589.6,463.9L587.1,485.4L569.6,506.1L556.6,509.1L552.1,520.4Z" data-dept="San Vicente"/><path class="dept r-ori" d="M842.8,557.8L803.3,562.4L765.0,556.5L755.1,559.8L743.8,556.6L743.8,554.0L753.2,553.3L753.8,546.8L748.8,538.7L741.3,533.4L749.8,547.9L727.5,548.2L721.3,550.8L725.3,552.5L738.2,550.8L738.2,554.0L728.6,558.0L718.0,557.7L709.7,552.5L707.2,542.1L712.8,545.0L718.5,539.2L718.5,536.5L711.4,533.3L703.7,522.4L698.5,519.1L703.4,534.8L701.5,539.2L670.5,527.3L660.5,513.1L642.1,509.9L595.9,513.7L590.8,516.0L596.6,519.8L614.0,521.9L650.9,518.8L667.7,533.4L667.7,536.5L642.1,530.5L642.1,533.4L693.6,546.2L701.5,554.0L698.6,559.1L691.2,557.8L671.5,546.2L564.9,526.3L551.9,519.4L556.6,509.1L569.6,506.1L587.1,485.4L589.6,463.9L610.2,423.5L614.6,398.0L617.0,394.6L623.8,393.5L636.2,376.1L645.3,378.1L653.7,372.9L662.1,356.9L688.1,337.9L709.9,336.3L722.2,350.2L739.4,354.5L737.2,363.7L739.8,374.7L732.3,383.2L738.4,400.2L739.7,415.8L735.6,421.7L734.6,430.5L730.2,429.5L729.1,433.9L731.3,450.1L737.3,453.0L742.7,475.0L750.5,486.0L764.8,489.4L775.3,499.1L784.1,502.6L795.5,499.3L798.0,503.4L798.2,510.9L804.6,517.7L801.0,528.2L817.5,528.3L842.8,557.8Z" data-dept="Usulután"/><path class="dept r-cen" d="M505.4,227.5L497.6,240.0L487.0,248.3L487.1,254.4L497.1,269.5L505.0,276.8L510.4,291.8L520.2,305.4L538.2,311.4L527.3,340.9L519.3,348.9L499.7,357.5L466.6,344.5L466.3,331.6L454.8,309.0L455.1,298.0L444.8,285.9L436.3,282.1L421.5,260.5L420.3,257.2L426.7,252.0L415.2,233.7L409.9,218.7L415.0,207.4L413.5,191.5L418.0,176.9L428.0,173.3L445.9,180.9L455.8,188.5L467.4,203.4L469.1,212.4L474.3,219.7L484.7,224.9L492.2,224.3L505.4,227.5Z" data-dept="Cuscatlán"/><path class="dept r-cen" d="M418.0,176.9L413.5,191.5L415.0,207.4L409.9,218.7L415.2,233.7L426.7,252.0L420.3,257.2L432.5,277.8L439.1,284.5L444.8,285.9L455.1,298.0L454.8,309.0L466.3,331.6L466.6,344.5L437.2,376.0L423.4,374.1L423.4,381.1L428.6,392.2L423.9,410.4L416.7,422.6L411.1,420.7L400.7,423.1L398.0,421.6L388.8,404.2L392.6,390.5L391.9,372.9L394.5,364.1L389.9,360.6L391.9,351.5L379.8,341.9L373.1,329.0L373.2,320.7L367.9,315.1L372.8,303.3L377.9,274.9L385.2,267.7L388.3,240.2L393.5,239.0L395.3,233.3L389.5,228.5L379.6,227.9L372.6,224.8L363.5,210.5L363.3,206.7L366.0,183.2L368.9,183.6L379.1,177.8L393.5,181.6L396.1,176.4L406.6,182.2L418.0,176.9Z" data-dept="San Salvador"/></g><g class="pins"><g class="pin-pos" transform="translate(90.8,262.7)"><g class="pin" style="--pd:0ms"><circle class="pin-pulse r-occ" r="13"/><circle class="pin-dot" r="5.5"/></g></g><g class="pin-pos" transform="translate(238.4,160.8)"><g class="pin" style="--pd:55ms"><circle class="pin-pulse r-occ" r="13"/><circle class="pin-dot" r="5.5"/></g></g><g class="pin-pos" transform="translate(433.9,128.7)"><g class="pin" style="--pd:110ms"><circle class="pin-pulse r-cen" r="13"/><circle class="pin-dot" r="5.5"/></g></g><g class="pin-pos" transform="translate(587.3,255.1)"><g class="pin" style="--pd:165ms"><circle class="pin-pulse r-par" r="13"/><circle class="pin-dot" r="5.5"/></g></g><g class="pin-pos" transform="translate(856.4,303.9)"><g class="pin" style="--pd:220ms"><circle class="pin-pulse r-ori" r="13"/><circle class="pin-dot" r="5.5"/></g></g><g class="pin-pos" transform="translate(794.3,398.9)"><g class="pin" style="--pd:275ms"><circle class="pin-pulse r-ori" r="13"/><circle class="pin-dot" r="5.5"/></g></g><g class="pin-pos" transform="translate(929.6,401.9)"><g class="pin" style="--pd:330ms"><circle class="pin-pulse r-ori" r="13"/><circle class="pin-dot" r="5.5"/></g></g><g class="pin-pos" transform="translate(207.5,328.5)"><g class="pin" style="--pd:385ms"><circle class="pin-pulse r-occ" r="13"/><circle class="pin-dot" r="5.5"/></g></g><g class="pin-pos" transform="translate(329.3,314.2)"><g class="pin" style="--pd:440ms"><circle class="pin-pulse r-cen" r="13"/><circle class="pin-dot" r="5.5"/></g></g><g class="pin-pos" transform="translate(484.0,430.4)"><g class="pin" style="--pd:495ms"><circle class="pin-pulse r-par" r="13"/><circle class="pin-dot" r="5.5"/></g></g><g class="pin-pos" transform="translate(584.7,403.9)"><g class="pin" style="--pd:550ms"><circle class="pin-pulse r-par" r="13"/><circle class="pin-dot" r="5.5"/></g></g><g class="pin-pos" transform="translate(664.5,446.2)"><g class="pin" style="--pd:605ms"><circle class="pin-pulse r-ori" r="13"/><circle class="pin-dot" r="5.5"/></g></g><g class="pin-pos" transform="translate(459.1,265.0)"><g class="pin" style="--pd:660ms"><circle class="pin-pulse r-cen" r="13"/><circle class="pin-dot" r="5.5"/></g></g><g class="pin-pos" transform="translate(414.4,298.9)"><g class="pin" style="--pd:715ms"><circle class="pin-pulse r-cen" r="13"/><circle class="pin-dot" r="5.5"/></g></g></g></svg>
+      <div class="map-legend">
+        <span class="lg occ"><i></i><span data-k="reg_occ"></span></span>
+        <span class="lg cen"><i></i><span data-k="reg_cen"></span></span>
+        <span class="lg par"><i></i><span data-k="reg_par"></span></span>
+        <span class="lg ori"><i></i><span data-k="reg_ori"></span></span>
+      </div>
+    </div>
+    <div class="cov-side rv">
+      <p class="lead" style="margin-top:0;margin-bottom:16px" data-k="s4_lead"></p>
+      <div class="cov-stats">
+        <div class="cstat"><div class="num" data-count="30" data-suffix="+">0</div><div class="lab" data-k="st1l"></div><div class="desc" data-k="st1d"></div></div>
+        <div class="cstat"><div class="num" data-count="11" data-suffix="">0</div><div class="lab" data-k="st2l"></div><div class="desc" data-k="st2d"></div></div>
+        <div class="cstat"><div class="num" data-count="14" data-suffix="">0</div><div class="lab" data-k="st3l"></div><div class="desc" data-k="st3d"></div></div>
+        <div class="cstat"><div class="num" data-count="40" data-suffix="+">0</div><div class="lab" data-k="st4l"></div><div class="desc" data-k="st4d"></div></div>
+        <div class="cstat"><div class="num" data-count="350" data-suffix="+">0</div><div class="lab" data-k="st5l"></div><div class="desc" data-k="st5d"></div></div>
+        <div class="cstat"><div class="num" data-count="100" data-suffix="%">0</div><div class="lab" data-k="st6l"></div><div class="desc" data-k="st6d"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 5 — APAMO SEG ===== -->
+<section class="slide" data-slide="4">
+  <div class="rv"><div class="eyebrow blue"><span class="idx" style="color:var(--blue-bright)">05</span><span class="ln"></span><span data-k="s6_eyebrow"></span></div>
+  <h2 class="head" data-k="s6_title"></h2>
+  <p class="lead" data-k="s6_lead"></p></div>
+  <div class="tiers">
+    <div class="tier blue rv"><div class="lvl" data-k="s6_1_l"></div><div class="big" data-k="s6_1_n"></div><div class="sub" data-k="s6_1_s"></div><div class="txt" data-k="s6_1_x"></div><div class="exlab" data-k="ex_label"></div><div class="ex" data-k="s6_1_e"></div></div>
+    <div class="tier blue rv"><div class="lvl" data-k="s6_2_l"></div><div class="big" data-k="s6_2_n"></div><div class="sub" data-k="s6_2_s"></div><div class="txt" data-k="s6_2_x"></div><div class="exlab" data-k="ex_label"></div><div class="ex" data-k="s6_2_e"></div></div>
+    <div class="tier blue rv"><div class="lvl" data-k="s6_3_l"></div><div class="big" data-k="s6_3_n"></div><div class="sub" data-k="s6_3_s"></div><div class="txt" data-k="s6_3_x"></div><div class="exlab" data-k="ex_label"></div><div class="ex" data-k="s6_3_e"></div></div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 6 — SOL SEG ===== -->
+<section class="slide" data-slide="5">
+  <div class="rv"><div class="eyebrow gold"><span class="idx">06</span><span class="ln"></span><span data-k="s7_eyebrow"></span></div>
+  <h2 class="head" data-k="s7_title"></h2>
+  <p class="lead" data-k="s7_lead"></p></div>
+  <div class="tiers">
+    <div class="tier gold rv"><div class="lvl" data-k="s7_1_l"></div><div class="big sm" data-k="s7_1_s"></div><div class="txt" data-k="s7_1_x"></div><div class="exlab" data-k="ex_label"></div><div class="ex" data-k="s7_1_e"></div></div>
+    <div class="tier gold rv"><div class="lvl" data-k="s7_2_l"></div><div class="big sm" data-k="s7_2_s"></div><div class="txt" data-k="s7_2_x"></div><div class="exlab" data-k="ex_label"></div><div class="ex" data-k="s7_2_e"></div></div>
+    <div class="tier gold rv"><div class="lvl" data-k="s7_3_l"></div><div class="big sm" data-k="s7_3_s"></div><div class="txt" data-k="s7_3_x"></div><div class="exlab" data-k="ex_label"></div><div class="ex" data-k="s7_3_e"></div></div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 7 — BRANDS ===== -->
+<section class="slide" data-slide="6">
+  <div class="rv"><div class="eyebrow"><span class="idx">07</span><span class="ln"></span><span data-k="s8_eyebrow"></span></div>
+  <h2 class="head" data-k="s8_title"></h2></div>
+  <div class="brands rv">
+    <div class="bcard"><div class="bn">Dynarex</div><div class="bc"><span data-k="b1"></span> · <span class="flag" data-k="b1c"></span></div></div>
+    <div class="bcard"><div class="bn">Romsons</div><div class="bc"><span data-k="b2"></span> · <span class="flag" data-k="b2c"></span></div></div>
+    <div class="bcard"><div class="bn">DHISVE</div><div class="bc"><span data-k="b3"></span> · <span class="flag" data-k="b3c"></span></div></div>
+    <div class="bcard"><div class="bn">Lab. Leroy</div><div class="bc"><span data-k="b4"></span> · <span class="flag" data-k="b4c"></span></div></div>
+    <div class="bcard"><div class="bn">SILMAG</div><div class="bc"><span data-k="b5"></span> · <span class="flag" data-k="b5c"></span></div></div>
+    <div class="bcard"><div class="bn">SAMTRONIC</div><div class="bc"><span data-k="b6"></span> · <span class="flag" data-k="b6c"></span></div></div>
+    <div class="bcard"><div class="bn">Grason-Stadler</div><div class="bc"><span data-k="b7"></span> · <span class="flag" data-k="b7c"></span></div></div>
+    <div class="bcard"><div class="bn">Starkey</div><div class="bc"><span data-k="b8"></span> · <span class="flag" data-k="b8c"></span></div></div>
+    <div class="bcard"><div class="bn">ARI Medical</div><div class="bc"><span data-k="b9"></span> · <span class="flag" data-k="b9c"></span></div></div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 8 — LINES ===== -->
+<section class="slide" data-slide="7">
+  <div class="rv"><div class="eyebrow"><span class="idx">08</span><span class="ln"></span><span data-k="s9_eyebrow"></span></div>
+  <h2 class="head" data-k="s9_title"></h2>
+  <p class="lead" data-k="s9_lead"></p></div>
+  <div class="lines">
+    <div class="line rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h18"/></svg></div><div><h4 data-k="l1t"></h4><p data-k="l1p"></p><div class="vendors">Dynarex · Romsons · DHISVE</div></div></div>
+    <div class="line rv"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 4v16M4 12h16"/></svg></div><div><h4 data-k="l2t"></h4><p data-k="l2p"></p><div class="vendors">ARI Medical</div></div></div>
+    <div class="line rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M6 3v6a6 6 0 0 0 12 0V3M9 21h6M12 15v6"/></svg></div><div><h4 data-k="l3t"></h4><p data-k="l3p"></p><div class="vendors">SAMTRONIC · Romsons</div></div></div>
+    <div class="line rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9M12 12l5-3M12 12v9"/><circle cx="12" cy="12" r="2"/></svg></div><div><h4 data-k="l4t"></h4><p data-k="l4p"></p><div class="vendors">Grason-Stadler</div></div></div>
+    <div class="line rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0-6 6c0 4 6 12 6 12s6-8 6-12a6 6 0 0 0-6-6z"/><circle cx="12" cy="9" r="2"/></svg></div><div><h4 data-k="l5t"></h4><p data-k="l5p"></p><div class="vendors">Starkey</div></div></div>
+    <div class="line rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M9 3h6v5l4 9a3 3 0 0 1-3 4H8a3 3 0 0 1-3-4l4-9V3z"/><path d="M7 14h10"/></svg></div><div><h4 data-k="l6t"></h4><p data-k="l6p"></p><div class="vendors">Lab. Leroy · SILMAG</div></div></div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 9 — CIMIENTOS (merged strengths + value prop) ===== -->
+<section class="slide" data-slide="8">
+  <div class="rv"><div class="eyebrow"><span class="idx">09</span><span class="ln"></span><span data-k="s11_eyebrow"></span></div>
+  <h2 class="head" data-k="s11_title"></h2>
+  <p class="lead" data-k="s11_lead"></p></div>
+  <div class="cimientos rv">
+    <div class="cim-card">
+      <div class="cim-ic"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6L20.5 9l-4.2 4.2 1 6.1L12 16.4 6.7 19.3l1-6.1L3.5 9l5.9-.4z"/></svg></div>
+      <h4 data-k="vp1t"></h4><p data-k="vp1p"></p>
+    </div>
+    <div class="cim-card">
+      <div class="cim-ic"><svg viewBox="0 0 24 24"><path d="M12 21s-6-5.7-6-10a6 6 0 1 1 12 0c0 4.3-6 10-6 10z"/><circle cx="12" cy="11" r="2.3"/></svg></div>
+      <h4 data-k="vp2t"></h4><p data-k="vp2p"></p>
+    </div>
+    <div class="cim-card">
+      <div class="cim-ic"><svg viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 0 1 13-5M19.5 12a7.5 7.5 0 0 1-13 5"/><path d="M17.5 3.5v3.8h-3.8M6.5 20.5v-3.8h3.8"/></svg></div>
+      <h4 data-k="vp3t"></h4><p data-k="vp3p"></p>
+    </div>
+    <div class="cim-card">
+      <div class="cim-ic"><svg viewBox="0 0 24 24"><path d="M4 20V11M9.3 20V5M14.7 20v-9M20 20V8M3 20h18"/></svg></div>
+      <h4 data-k="vp4t"></h4><p data-k="vp4p"></p>
+    </div>
+    <div class="cim-card">
+      <div class="cim-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></div>
+      <h4 data-k="cim_rep_t"></h4><p data-k="cim_rep_p"></p>
+    </div>
+    <div class="cim-card">
+      <div class="cim-ic"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4-3 7.2-7 9-4-1.8-7-5-7-9V6z"/><path d="M8.8 12l2.2 2.2 4.2-4.4"/></svg></div>
+      <h4 data-k="cim_cert_t"></h4><p data-k="cim_cert_p"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 10 — TEAM / ORG ===== -->
+<section class="slide" data-slide="9">
+  <div class="rv org-head">
+    <div><div class="eyebrow"><span class="idx">10</span><span class="ln"></span><span data-k="s12_eyebrow"></span></div>
+    <h2 class="head" data-k="s12_title"></h2></div>
+    <div class="hc-badge"><div class="hc-n" data-k="t_count_n"></div><div class="hc-l" data-k="t_count_l"></div></div>
+  </div>
+  <div class="org rv">
+    <div class="org-row"><div class="obox ceo"><div class="ot" data-k="t_ceo"></div><div class="os" data-k="t_ceo_s"></div></div></div>
+    <div class="connector"></div>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="obox lead-blue"><div class="ot" data-k="t_cfo"></div><div class="os" data-k="t_cfo_s"></div></div>
+        <div class="psub">
+          <div class="obox sm"><div class="ot" data-k="t_fin"></div><div class="os" data-k="t_fin_s"></div></div>
+          <div class="obox sm"><div class="ot" data-k="t_comp"></div><div class="os" data-k="t_comp_s"></div></div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="obox lead-blue"><div class="ot" data-k="t_coo"></div><div class="os" data-k="t_coo_s"></div></div>
+        <div class="psub">
+          <div class="obox sm"><div class="ot" data-k="t_log"></div><div class="os" data-k="t_log_s"></div></div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="obox lead-gold"><div class="ot" data-k="t_cgo"></div><div class="os" data-k="t_cgo_s"></div></div>
+        <div class="psub">
+          <div class="obox sm"><div class="ot" data-k="t_pr"></div><div class="os" data-k="t_pr_s"></div></div>
+          <div class="obox sm"><div class="ot" data-k="t_growth"></div><div class="os" data-k="t_growth_s"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="team-mid-label"><span data-k="t_comm"></span> · <span data-k="t_comm_s"></span></div>
+    <div class="commercial">
+      <div class="comm-card pub"><div class="cc-h" data-k="t_pub"></div><div class="cc-chips"><span class="gchip" data-k="t_dept"></span><span class="gchip" data-k="t_field"></span></div></div>
+      <div class="comm-card priv"><div class="cc-h" data-k="t_priv"></div><div class="cc-chips"><span class="gchip" data-k="t_dept"></span><span class="gchip" data-k="t_field"></span></div></div>
+    </div>
+    <div class="org-foot" data-k="t_foot"></div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 11 — VISION / EXPANSION ===== -->
+<section class="slide" data-slide="10">
+  <div class="rv"><div class="eyebrow"><span class="idx">11</span><span class="ln"></span><span data-k="s14_eyebrow"></span></div>
+  <h2 class="head" data-k="s14_title"></h2></div>
+  <div class="transition rv">
+    <div class="vcard from"><div class="vh" data-k="s14_from_t"></div><p data-k="s14_from_x"></p></div>
+    <div class="trans-mid">
+      <svg class="trans-svg" viewBox="0 0 170 56" xmlns="http://www.w3.org/2000/svg">
+        <line x1="16" y1="28" x2="154" y2="28" class="t-line"/>
+        <line x1="16" y1="28" x2="154" y2="28" class="t-flow"/>
+        <path d="M96 19 L110 28 L96 37" class="t-arrow"/>
+        <circle cx="16" cy="28" r="7" class="t-d-blue"/>
+        <circle cx="154" cy="28" r="7" class="t-d-gold"/>
+      </svg>
+    </div>
+    <div class="vcard to"><div class="vh" data-k="s14_to_t"></div><p data-k="s14_to_x"></p></div>
+  </div>
+  <div class="vision-caption rv">
+    <span><b data-k="s14_stat1"></b> <span data-k="s14_stat1l"></span></span>
+    <span class="vc-sep"></span>
+    <span><b data-k="s14_stat2"></b> <span data-k="s14_stat2l"></span></span>
+  </div>
+  <div class="roadmap rv">
+    <div class="rm-label" data-k="s14_plan"></div>
+    <div class="rm-phases">
+      <div class="rm-phase home">
+        <div class="ph-head"><span class="yr" data-k="s14_y1"></span><span class="ph-x" data-k="s14_y1x"></span></div>
+        <div class="ctry">
+          <div class="cty"><span class="cdot"></span><span data-k="cty_sv"></span></div>
+          <div class="cstats2">
+            <div class="cs2"><span class="rl" data-k="s14_l_pop"></span><b>≈6.3M</b></div><div class="cs2"><span class="rl" data-k="s14_l_pub"></span><b>~40</b></div>
+            <div class="cs2"><span class="rl" data-k="s14_l_priv"></span><b>~45</b></div><div class="cs2"><span class="rl" data-k="s14_l_pharm"></span><b>~2,400</b></div>
+          </div>
+        </div>
+      </div>
+      <div class="rm-phase">
+        <div class="ph-head"><span class="yr" data-k="s14_y2"></span><span class="ph-x" data-k="s14_y2x"></span></div>
+        <div class="ctry">
+          <div class="cty"><span class="cdot"></span><span data-k="cty_gt"></span></div>
+          <div class="cstats2">
+            <div class="cs2"><span class="rl" data-k="s14_l_pop"></span><b>≈17.8M</b></div><div class="cs2"><span class="rl" data-k="s14_l_pub"></span><b>~45</b></div>
+            <div class="cs2"><span class="rl" data-k="s14_l_priv"></span><b>~110</b></div><div class="cs2"><span class="rl" data-k="s14_l_pharm"></span><b>~9,000</b></div>
+          </div>
+        </div>
+        <div class="ctry">
+          <div class="cty"><span class="cdot"></span><span data-k="cty_pa"></span></div>
+          <div class="cstats2">
+            <div class="cs2"><span class="rl" data-k="s14_l_pop"></span><b>≈4.5M</b></div><div class="cs2"><span class="rl" data-k="s14_l_pub"></span><b>~60</b></div>
+            <div class="cs2"><span class="rl" data-k="s14_l_priv"></span><b>~35</b></div><div class="cs2"><span class="rl" data-k="s14_l_pharm"></span><b>~1,500</b></div>
+          </div>
+        </div>
+      </div>
+      <div class="rm-phase">
+        <div class="ph-head"><span class="yr" data-k="s14_y3"></span><span class="ph-x" data-k="s14_y3x"></span></div>
+        <div class="ctry">
+          <div class="cty"><span class="cdot"></span><span data-k="cty_hn"></span></div>
+          <div class="cstats2">
+            <div class="cs2"><span class="rl" data-k="s14_l_pop"></span><b>≈10.6M</b></div><div class="cs2"><span class="rl" data-k="s14_l_pub"></span><b>~30</b></div>
+            <div class="cs2"><span class="rl" data-k="s14_l_priv"></span><b>~60</b></div><div class="cs2"><span class="rl" data-k="s14_l_pharm"></span><b>~3,000</b></div>
+          </div>
+        </div>
+        <div class="ctry">
+          <div class="cty"><span class="cdot"></span><span data-k="cty_ni"></span></div>
+          <div class="cstats2">
+            <div class="cs2"><span class="rl" data-k="s14_l_pop"></span><b>≈6.9M</b></div><div class="cs2"><span class="rl" data-k="s14_l_pub"></span><b>~70</b></div>
+            <div class="cs2"><span class="rl" data-k="s14_l_priv"></span><b>~25</b></div><div class="cs2"><span class="rl" data-k="s14_l_pharm"></span><b>~2,000</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rm-note" data-k="s14_est_note"></div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 12 — VALUES + CAROUSEL ===== -->
+<section class="slide" data-slide="11">
+  <div class="rv"><div class="eyebrow"><span class="idx">12</span><span class="ln"></span><span data-k="s13_eyebrow"></span></div>
+  <h2 class="head" data-k="s13_title"></h2></div>
+  <div class="values-row rv">
+    <div class="val"><div class="vt" data-k="vl1t"></div><p data-k="vl1p"></p></div>
+    <div class="val"><div class="vt" data-k="vl2t"></div><p data-k="vl2p"></p></div>
+    <div class="val"><div class="vt" data-k="vl3t"></div><p data-k="vl3p"></p></div>
+    <div class="val"><div class="vt" data-k="vl4t"></div><p data-k="vl4p"></p></div>
+    <div class="val"><div class="vt" data-k="vl5t"></div><p data-k="vl5p"></p></div>
+    <div class="val"><div class="vt" data-k="vl6t"></div><p data-k="vl6p"></p></div>
+  </div>
+  <div class="clients-block rv">
+    <div class="carousel-label" data-k="s13_clients"></div>
+    <div class="carousel">
+      <div class="marquee a"><span class="cchip">MINSAL</span><span class="cchip">ISSS</span><span class="cchip">Hospital El Salvador</span><span class="cchip">Benjamín Bloom</span><span class="cchip">Hospital de la Mujer</span><span class="cchip">San Juan de Dios</span><span class="cchip">San Rafael</span><span class="cchip">Zacamil</span><span class="cchip">Saldaña</span><span class="cchip">Santa Rosa de Lima</span><span class="cchip">Chalchuapa</span><span class="cchip">MINSAL</span><span class="cchip">ISSS</span><span class="cchip">Hospital El Salvador</span><span class="cchip">Benjamín Bloom</span><span class="cchip">Hospital de la Mujer</span><span class="cchip">San Juan de Dios</span><span class="cchip">San Rafael</span><span class="cchip">Zacamil</span><span class="cchip">Saldaña</span><span class="cchip">Santa Rosa de Lima</span><span class="cchip">Chalchuapa</span></div>
+      <div class="marquee b"><span class="cchip">ANDA</span><span class="cchip">FOSALUD</span><span class="cchip">FOPROLYD</span><span class="cchip">ISRI</span><span class="cchip">ISNA</span><span class="cchip">INABVE</span><span class="cchip">Ministerio de la Defensa</span><span class="cchip">Obras Públicas (MOP)</span><span class="cchip">Hospital Psiquiátrico</span><span class="cchip">San Bartolo</span><span class="cchip">Usulután</span><span class="cchip">ANDA</span><span class="cchip">FOSALUD</span><span class="cchip">FOPROLYD</span><span class="cchip">ISRI</span><span class="cchip">ISNA</span><span class="cchip">INABVE</span><span class="cchip">Ministerio de la Defensa</span><span class="cchip">Obras Públicas (MOP)</span><span class="cchip">Hospital Psiquiátrico</span><span class="cchip">San Bartolo</span><span class="cchip">Usulután</span></div>
+      <div class="marquee c"><span class="cchip">Cojutepeque</span><span class="cchip">Ilobasco</span><span class="cchip">Nueva Concepción</span><span class="cchip">Nueva Guadalupe</span><span class="cchip">Suchitoto</span><span class="cchip">Zacatecoluca</span><span class="cchip">Chalatenango</span><span class="cchip">Sonsonate</span><span class="cchip">Alcaldía de Sonsonate</span><span class="cchip">Fundación Inocencia</span><span class="cchip">FUNSAES</span><span class="cchip">Cojutepeque</span><span class="cchip">Ilobasco</span><span class="cchip">Nueva Concepción</span><span class="cchip">Nueva Guadalupe</span><span class="cchip">Suchitoto</span><span class="cchip">Zacatecoluca</span><span class="cchip">Chalatenango</span><span class="cchip">Sonsonate</span><span class="cchip">Alcaldía de Sonsonate</span><span class="cchip">Fundación Inocencia</span><span class="cchip">FUNSAES</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 13 — CONTACT ===== -->
+<section class="slide s-contact dark" data-slide="12">
+  <div class="rv"><div class="eyebrow"><span class="idx">13</span><span class="ln"></span><span data-k="s15_eyebrow"></span></div>
+  <h2 class="ctitle" data-k="s15_title"></h2></div>
+  <div class="cgrid rv">
+    <div class="cblock phone"><div class="clab" data-k="c_phone"></div><div class="cval"><a href="tel:+50325096800">+503 2509-6800</a></div></div>
+    <div class="cblock"><div class="clab" data-k="c_web"></div><div class="cval"><a href="https://www.grupoapamo.net" target="_blank" rel="noopener">grupoapamo.net</a><br><a href="https://www.solmedicasv.com" target="_blank" rel="noopener">solmedicasv.com</a></div></div>
+    <div class="cblock"><div class="clab" data-k="c_addr"></div><div class="cval" style="font-weight:500;font-size:14px" data-k="c_addr_v"></div></div>
+  </div>
+  <div class="c-thanks rv">
+    <div class="ty"><b data-k="c_thanks"></b></div>
+    <div class="brandmark"><span class="ap">APAMO</span><span class="sep"></span><span class="sol">SOL<b>M</b>ÉDICA</span></div>
+  </div>
+</section>
+
+  </div>
+</div>
+
+<!-- Chrome -->
+<div class="topbar">
+  <div class="brandmark">
+    <span class="ap">APAMO</span><span class="sep"></span><span class="sol">SOL<b>M</b>ÉDICA</span>
+  </div>
+  <div class="top-right">
+    <div class="lang" id="langToggle" data-lang="es" role="button" tabindex="0" aria-label="Language / Idioma">
+      <span class="knob"></span>
+      <button class="es" type="button">ES</button>
+      <button class="en" type="button">EN</button>
+    </div>
+    <button class="fs-btn" id="fsBtn" aria-label="Fullscreen" title="Pantalla completa">
+      <svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+  <div class="counter"><span id="cur">01</span><span class="c-sep">/</span><span id="total">13</span></div>
+  <button class="nav-btn" id="nextBtn" aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+</div>
+<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+
+<script>
+const I18N = {"es": {"ui_prev": "Anterior", "ui_next": "Siguiente", "s1_eyebrow": "Dispositivos y equipo médico · Centroamérica — El Salvador", "s1_title": "Cobertura integral de la red de salud, con visión regional.", "s1_sub": "Compañía regional con base en El Salvador, especializada en dispositivos, insumos y equipo médico para toda la red hospitalaria pública y privada, con proyección en Centroamérica.", "s1_pub": "Sector público · MINSAL e ISSS", "s1_priv": "Sector privado · hospitales y clínicas", "s1_kicker": "Perfil corporativo", "tab_who": "Quiénes somos", "tab_history": "Historia", "tab_coverage": "Cobertura", "tab_model": "Modelo", "tab_apamo": "APAMO", "tab_sol": "SOLMÉDICA", "tab_port": "Portafolio", "tab_lines": "Líneas", "tab_why": "Fortalezas", "tab_value": "Valor", "tab_team": "Equipo", "tab_values": "Valores", "tab_vision": "Expansión", "tab_contact": "Contacto", "tab_title": "Inicio", "s2_eyebrow": "Quiénes somos", "s2_title": "Modelo de doble cobertura.", "s2_lead": "Una estructura comercial especializada que atiende de forma diferenciada los dos grandes mercados de salud de El Salvador, con un mismo estándar de calidad, respaldo y servicio.", "s2_a_badge": "Sector público · desde feb. 2005", "s2_a_role": "Especialistas en el sector público", "s2_a_1": "Toda la red de hospitales públicos: MINSAL e ISSS y sus dependencias.", "s2_a_2": "Amplia trayectoria en licitaciones y abastecimiento público.", "s2_a_3": "Cobertura nacional en los tres niveles de atención.", "s2_b_badge": "Sector privado · desde sep. 2012", "s2_b_role": "Especialistas en el sector privado", "s2_b_1": "Toda la red de hospitales y clínicas privadas del país.", "s2_b_2": "Atención ágil y personalizada para el mercado privado.", "s2_b_3": "Mismo portafolio internacional con respaldo técnico y postventa.", "s3_eyebrow": "Nuestra historia", "s3_title": "Más de 75 años de raíces en la región y en la salud salvadoreña.", "s3_lead": "Una trayectoria que nace en 1950 y que hoy sostiene una operación nacional con know-how probado en licitaciones, logística y abastecimiento a gran escala.", "s3_1_y": "1950", "s3_1_t": "Droguería BSA", "s3_1_x": "Nacen nuestras raíces. Droguería BSA inicia operaciones abasteciendo a El Salvador y a países vecinos de Centroamérica con productos farmacéuticos y de droguería.", "s3_2_y": "Feb 2005", "s3_2_t": "Nace APAMO", "s3_2_x": "Los socios, la familia y el equipo clave detrás de la operación de BSA fundan APAMO para la distribución de insumos y dispositivos médicos al sector público, a escala nacional.", "s3_3_y": "2012", "s3_3_t": "Doble mandato · SOLMÉDICA", "s3_3_x": "La organización asume el mandato del sector privado y se consolida como operación de doble mandato, cubriendo hospitales y clínicas privadas de todo el país.", "s3_4_y": "2018", "s3_4_t": "Soluciones químico-minerales", "s3_4_x": "Proveedores de materiales e insumos críticos para el Estado salvadoreño en el sector químico-mineral, con foco en la solubilidad y potabilización del agua a nivel nacional.", "s3_5_y": "Hoy", "s3_5_t": "Líderes del mercado", "s3_5_x": "Hoy somos líderes en la distribución de insumos médicos a nivel nacional, equipando a todos los hospitales del país en los momentos más críticos —incluida la pandemia—, con más de 75 años de trayectoria acumulada.", "s4_eyebrow": "Cobertura nacional", "s4_title": "Inteligencia territorial integral, sin puntos ciegos.", "s4_lead": "Llegamos a cada departamento, en los tres niveles del sistema público y en los principales centros privados. Cuatro regiones comerciales, una cobertura pensada al detalle.", "reg_occ": "Occidental", "reg_cen": "Central / Metro", "reg_par": "Paracentral", "reg_ori": "Oriental", "st1l": "Hospitales MINSAL", "st1d": "Red nacional pública", "st2l": "Hospitales ISSS", "st2d": "Seguridad social", "st3l": "Departamentos", "st3d": "Cobertura nacional total", "st4l": "Hospitales privados", "st4d": "Principales centros del país", "st5l": "Unidades de 1.er nivel", "st5d": "UCSF, clínicas y unidades", "st6l": "Del sistema de salud", "st6d": "Público + privado", "s5_eyebrow": "Nuestro modelo", "s5_title": "Un modelo de cobertura dual.", "s5_lead": "Dos canales especializados que, en conjunto, cubren el 100 % del sistema de salud salvadoreño.", "s5_pub_t": "Sector público — APAMO", "s5_pub_1": "Red MINSAL: hospitales nacionales y regionales", "s5_pub_2": "Red ISSS: hospitales y unidades médicas", "s5_pub_3": "Primer nivel y dependencias a nivel nacional", "s5_pub_4": "Procesos de licitación y compra pública", "s5_priv_t": "Sector privado — SOLMÉDICA", "s5_priv_1": "Hospitales privados de alta complejidad", "s5_priv_2": "Hospitales y clínicas de especialidades", "s5_priv_3": "Centros y maternidades privadas", "s5_priv_4": "Compra directa con respuesta inmediata", "s5_note": "En conjunto cubrimos el 100 % del sistema de salud — público + privado.", "s6_eyebrow": "APAMO · Sector público", "s6_title": "Segmentación de la red pública.", "s6_lead": "Atendemos los tres niveles de atención de MINSAL e ISSS, priorizando los centros de mayor complejidad y volumen.", "ex_label": "Ejemplos", "s6_1_l": "3.er Nivel", "s6_1_n": "8", "s6_1_s": "Hospitales especializados", "s6_1_x": "Referencia nacional y alta complejidad. Cuentas de mayor relevancia y volumen.", "s6_1_e": "Rosales · Hospital El Salvador · Benjamín Bloom · Hospital de la Mujer", "s6_2_l": "2.do Nivel", "s6_2_n": "23", "s6_2_s": "Regionales y generales", "s6_2_x": "Hospitales departamentales que concentran la atención de cada región.", "s6_2_e": "San Juan de Dios · San Rafael · Zacamil · Regionales del ISSS", "s6_3_l": "1.er Nivel", "s6_3_n": "350+", "s6_3_s": "Red ambulatoria", "s6_3_x": "Unidades, clínicas comunales y empresariales con alta demanda de insumos.", "s6_3_e": "UCSF (MINSAL) · Unidades médicas del ISSS · Clínicas comunales", "s7_eyebrow": "SOLMÉDICA · Sector privado", "s7_title": "Segmentación de la red privada.", "s7_lead": "Clasificamos los centros privados por tamaño y complejidad para enfocar el portafolio y el servicio en las cuentas de mayor valor.", "s7_1_l": "Alta complejidad", "s7_1_s": "Hospitales premium", "s7_1_x": "Grandes hospitales privados con amplia cartera de especialidades, cirugía y hospitalización.", "s7_1_e": "Hospital de Diagnóstico · Especialidades La Paz · Centro Ginecológico", "s7_2_l": "Intermedios", "s7_2_s": "Hospitales generales", "s7_2_x": "Centros de tamaño medio con cirugía, emergencias y hospitalización general.", "s7_2_e": "Centro Médico Lourdes · Hospital Bautista · Emergencias Merliot", "s7_3_l": "Especializados", "s7_3_s": "Clínicas y nicho", "s7_3_x": "Maternidades, oftalmología, audiología y centros de especialidad de alto valor.", "s7_3_e": "Oftalmología · Maternidades privadas · Centros de especialidades", "s8_eyebrow": "Nuestro portafolio", "s8_title": "Marcas internacionales que representamos.", "s8_lead": "Un portafolio global reunido bajo un solo proveedor, con respaldo técnico y postventa local.", "b1": "Insumos y descartables", "b1c": "EE. UU.", "b2": "Descartables y respiratorio", "b2c": "India", "b3": "Descartables y ropa médica", "b3c": "Ecuador", "b4": "Línea farmacéutica", "b4c": "Argentina", "b5": "Antisépticos y curación", "b5c": "México", "b6": "Terapia de infusión", "b6c": "Brasil", "b7": "Diagnóstico audiológico", "b7c": "EE. UU.", "b8": "Soluciones auditivas", "b8c": "EE. UU.", "b9": "Suturas y cierre quirúrgico", "b9c": "China", "s9_eyebrow": "Líneas de producto", "s9_title": "Principales verticales de especialización.", "s9_lead": "Un portafolio amplio para quirófano, hospitalización, diagnóstico y atención ambulatoria.", "l1t": "Insumos y descartables", "l1p": "Material de curación, descartables y suministros para el cuidado del paciente.", "l2t": "Cirugía y cierre", "l2p": "Suturas, hemostasia y materiales para cierre de heridas en quirófano.", "l3t": "Terapia de infusión", "l3p": "Bombas y equipos para administración controlada de medicamentos y fluidos.", "l4t": "Audiología y diagnóstico", "l4p": "Audiómetros, timpanómetros y equipos de diagnóstico auditivo.", "l5t": "Soluciones auditivas", "l5p": "Audífonos y tecnología de apoyo a la audición.", "l6t": "Farmacéutica y curación", "l6p": "Antisépticos, soluciones y productos para el cuidado de heridas.", "s10_eyebrow": "Por qué elegirnos", "s10_title": "Nuestras fortalezas.", "w1t": "Trayectoria comprobada", "w1p": "Más de 75 años de trayectoria acumulada en el mercado salvadoreño de la salud, desde Droguería BSA (1950) hasta hoy.", "w2t": "Cobertura nacional total", "w2p": "Presencia en toda la red pública y privada, en los 14 departamentos del país.", "w3t": "Representación internacional", "w3p": "Marcas líderes de EE. UU., Brasil, India, México, China y Ecuador en un solo portafolio.", "w4t": "Cumplimiento regulatorio", "w4p": "Productos y procesos alineados a la normativa sanitaria y de compra pública.", "w5t": "Soporte técnico y postventa", "w5p": "Instalación, capacitación y mantenimiento del equipo médico que comercializamos.", "w6t": "Logística y abastecimiento", "w6p": "Capacidad de respuesta y continuidad de suministro para grandes volúmenes.", "s11_eyebrow": "Por qué elegirnos", "s11_title": "Los Cimientos de Nuestro Liderazgo.", "s11_lead": "No somos solo importadores y distribuidores: somos expertos en nuestras verticales, con un conocimiento profundo del mercado salvadoreño y de toda la región centroamericana.", "vp1t": "Líderes en nuestras verticales", "vp1p": "Más de 20 años liderando categorías clave —insumos y descartables, audiología, farmacéutica y curación—. Expertos en la materia, con un liderazgo de +35 años de experiencia promedio en la industria.", "vp2t": "Profundidad regional", "vp2p": "Conocemos El Salvador y Centroamérica. Nuestras raíces están enraizadas en la región y ya contamos con una amplia red de hospitales y farmacias con quienes trabajamos o estamos en conversación.", "vp3t": "Acompañamiento de punta a punta", "vp3p": "Trabajamos los procesos de principio a fin —desde la instalación y la capacitación hasta el soporte técnico y la postventa—, para que cada cliente se sienta en control y en buenas manos.", "cim_rep_t": "Representación exclusiva internacional", "cim_rep_p": "Marcas líderes de EE. UU., Brasil, India, México, China y Ecuador, varias en representación exclusiva para el país.", "cim_cert_t": "Certificación y cumplimiento regulatorio", "cim_cert_p": "Nuestros productos y procesos están alineados, aprobados y certificados conforme a la normativa sanitaria y de compra pública.", "vp4t": "Capacidad y escala", "vp4p": "Liquidez para asumir mandatos de cualquier tamaño a gran escala y desarrollar marcas en toda la región a través de canales que hemos construido durante años.", "s12_eyebrow": "Nuestro equipo", "s12_title": "Una estructura para escalar.", "s12_lead": "Un equipo organizado para sostener una operación nacional de doble mandato y para abrir nuevos mercados y representaciones.", "t_count_l": "Colaboradores", "t_count_n": "110+", "t_ceo": "Dirección General", "t_ceo_s": "CEO", "t_cfo": "Dirección Financiera", "t_cfo_s": "CFO", "t_coo": "Dirección de Operaciones", "t_coo_s": "COO", "t_cgo": "Estrategia & Desarrollo", "t_cgo_s": "Dirección · CGO", "t_fin": "Finanzas y Administración", "t_fin_s": "Líder + equipo de 3–4", "t_comp": "Cumplimiento & Asuntos Regulatorios", "t_comp_s": "Líder + equipo de 3–4", "t_pr": "Relaciones Públicas & Marketing", "t_pr_s": "Líder + equipo de 3–4", "t_growth": "Desarrollo de Negocios", "t_growth_s": "Nuevas marcas y oportunidades · 3–4", "t_log": "Logística & Abastecimiento", "t_log_s": "Equipo de +20 colaboradores", "t_comm": "Gerencias comerciales", "t_comm_s": "Bajo COO · cobertura en los 14 departamentos", "t_pub": "Sector Público · APAMO", "t_priv": "Sector Privado · SOLMÉDICA", "t_dept": "14 departamentos", "t_field": "3 ventas + 2 postventa por departamento", "t_foot": "Estructura de referencia; los tamaños de equipo se ajustan por volumen de cada cuenta y región.", "s13_eyebrow": "Nuestros valores", "s13_title": "Una empresa familiar, con propósito humano.", "vl1t": "Servicio", "vl1p": "Entrega, cercanía y calidez humana.", "vl2t": "Compromiso", "vl2p": "Responsabilidad y pasión en cada proyecto.", "vl3t": "Excelencia", "vl3p": "Mejora continua todos los días.", "vl4t": "Integridad", "vl4p": "Honestidad y ética en todo lo que hacemos.", "vl5t": "Humanidad", "vl5p": "Servir a la comunidad y salvar vidas.", "vl6t": "Confianza", "vl6p": "Cumplimiento, transparencia y empatía.", "s13_clients": "Quienes confían en nosotros", "s14_eyebrow": "Trayectoria y proyección", "s14_title": "De El Salvador a Centroamérica.", "s14_lead": "Con una operación nacional consolidada y un liderazgo de mercado probado, el siguiente paso de APAMO es llevar el modelo de doble mandato a los mercados desatendidos de la región.", "s14_from_t": "De dónde venimos", "s14_from_x": "Una operación nacional de doble mandato en El Salvador: más de 75 años de trayectoria, cobertura total y liderazgo de mercado.", "s14_to_t": "Hacia dónde vamos", "s14_to_x": "Operaciones propias en Centroamérica, con enfoque en el CA-4 y Panamá: mercados con necesidades desatendidas en dispositivos y equipo médico.", "s14_stat1": "≈46M", "s14_stat1l": "habitantes en el CA-4 + Panamá", "s14_stat2": "5", "s14_stat2l": "mercados objetivo", "s14_stat3": "75+", "s14_stat3l": "años de know-how a exportar", "s14_plan": "Plan a 5 años", "s14_y1": "Año 1", "s14_y1x": "Consolidación y plataforma regional", "s14_y2": "Año 2", "s14_y2x": "Apertura de operaciones en Guatemala y Panamá", "s14_y3": "Año 3", "s14_y3x": "Expansión a Honduras y Nicaragua", "s14_y4": "Año 4", "s14_y4x": "Entrada a Honduras", "s14_y5": "Año 5", "s14_y5x": "Nicaragua y consolidación regional", "s14_l_pop": "Pob.", "s14_l_pub": "Hosp. púb.", "s14_l_priv": "Hosp. priv.", "s14_l_pharm": "Farmacias", "s14_est_note": "Cifras de mercado estimadas, sujetas a validación.", "cty_sv": "El Salvador", "cty_gt": "Guatemala", "cty_hn": "Honduras", "cty_ni": "Nicaragua", "cty_pa": "Panamá", "s15_eyebrow": "Contacto", "s15_title": "Su aliado en dispositivos y equipo médico para toda la red de salud de El Salvador.", "c_phone": "Teléfono", "c_web": "Sitios web", "c_addr": "Dirección", "c_addr_v": "Calle El Mirador y Pasaje Domingo Santos #110, Col. Escalón, San Salvador, El Salvador", "c_thanks": "Infraestructura médica respaldando la misión de salvar vidas.", "foot": "Dispositivos y equipo médico · El Salvador"}, "en": {"ui_prev": "Previous", "ui_next": "Next", "s1_eyebrow": "Medical devices & equipment · Central America — El Salvador", "s1_title": "Comprehensive healthcare-network coverage, with a regional vision.", "s1_sub": "A regional company based in El Salvador, specialized in medical devices, supplies and equipment for the entire public and private hospital network, with reach across Central America.", "s1_pub": "Public sector · MINSAL & ISSS", "s1_priv": "Private sector · hospitals & clinics", "s1_kicker": "Corporate profile", "tab_who": "Who we are", "tab_history": "History", "tab_coverage": "Coverage", "tab_model": "Model", "tab_apamo": "APAMO", "tab_sol": "SOLMÉDICA", "tab_port": "Portfolio", "tab_lines": "Lines", "tab_why": "Strengths", "tab_value": "Value", "tab_team": "Team", "tab_values": "Values", "tab_vision": "Expansion", "tab_contact": "Contact", "tab_title": "Start", "s2_eyebrow": "Who we are", "s2_title": "A dual-coverage model.", "s2_lead": "A specialized commercial structure serving El Salvador's two major healthcare markets distinctly, with one consistent standard of quality, backing and service.", "s2_a_badge": "Public sector · since Feb. 2005", "s2_a_role": "Public-sector specialists", "s2_a_1": "The entire public hospital network: MINSAL and ISSS and their facilities.", "s2_a_2": "Extensive experience in public tenders and procurement.", "s2_a_3": "Nationwide coverage across all three levels of care.", "s2_b_badge": "Private sector · since Sep. 2012", "s2_b_role": "Private-sector specialists", "s2_b_1": "The country's entire private hospital and clinic network.", "s2_b_2": "Agile, personalized service for the private market.", "s2_b_3": "Same international portfolio with technical and after-sales support.", "s3_eyebrow": "Our history", "s3_title": "Over 75 years of roots in the region and in Salvadoran healthcare.", "s3_lead": "A journey that began in 1950 and today sustains a national operation with proven know-how in tenders, logistics and large-scale supply.", "s3_1_y": "1950", "s3_1_t": "Droguería BSA", "s3_1_x": "Our roots begin. Droguería BSA starts operations, supplying El Salvador and neighboring Central American countries with pharmaceutical and drugstore products.", "s3_2_y": "Feb 2005", "s3_2_t": "APAMO is born", "s3_2_x": "The partners, family and key team behind BSA's operation found APAMO to distribute medical supplies and devices to the public sector, at a national scale.", "s3_3_y": "2012", "s3_3_t": "Dual mandate · SOLMÉDICA", "s3_3_x": "The organization takes on the private-sector mandate and consolidates as a dual-mandate operation, serving private hospitals and clinics nationwide.", "s3_4_y": "2018", "s3_4_t": "Chemical & mineral solutions", "s3_4_x": "A supplier of critical materials and inputs to the Salvadoran State in the chemical and mineral sector, focused on the solubility and purification of the nation’s water.", "s3_5_y": "Today", "s3_5_t": "Market leaders", "s3_5_x": "Today we lead the nationwide distribution of medical supplies, equipping every hospital in the country at the most critical times —including the pandemic— with over 75 years of accumulated experience.", "s4_eyebrow": "National coverage", "s4_title": "Integral territorial intelligence, with no blind spots.", "s4_lead": "We reach every department, across all three levels of public care and the leading private centers. Four commercial regions, coverage planned in detail.", "reg_occ": "Western", "reg_cen": "Central / Metro", "reg_par": "Paracentral", "reg_ori": "Eastern", "st1l": "MINSAL hospitals", "st1d": "National public network", "st2l": "ISSS hospitals", "st2d": "Social security", "st3l": "Departments", "st3d": "Full national coverage", "st4l": "Private hospitals", "st4d": "Country's leading centers", "st5l": "Primary-care units", "st5d": "UCSF, clinics and units", "st6l": "Of the health system", "st6d": "Public + private", "s5_eyebrow": "Our model", "s5_title": "A dual-coverage model.", "s5_lead": "Two specialized channels that together cover 100% of El Salvador's healthcare system.", "s5_pub_t": "Public sector — APAMO", "s5_pub_1": "MINSAL network: national and regional hospitals", "s5_pub_2": "ISSS network: hospitals and medical units", "s5_pub_3": "Primary care and facilities nationwide", "s5_pub_4": "Public tender and procurement processes", "s5_priv_t": "Private sector — SOLMÉDICA", "s5_priv_1": "High-complexity private hospitals", "s5_priv_2": "Specialty hospitals and clinics", "s5_priv_3": "Private centers and maternity units", "s5_priv_4": "Direct purchasing with immediate response", "s5_note": "Together we cover 100% of the healthcare system — public + private.", "s6_eyebrow": "APAMO · Public sector", "s6_title": "Segmenting the public network.", "s6_lead": "We serve all three levels of care at MINSAL and ISSS, prioritizing the centers of greatest complexity and volume.", "ex_label": "Examples", "s6_1_l": "3rd Level", "s6_1_n": "8", "s6_1_s": "Specialized hospitals", "s6_1_x": "National referral and high complexity. The most relevant, highest-volume accounts.", "s6_1_e": "Rosales · Hospital El Salvador · Benjamín Bloom · Hospital de la Mujer", "s6_2_l": "2nd Level", "s6_2_n": "23", "s6_2_s": "Regional & general", "s6_2_x": "Departmental hospitals that concentrate care for each region.", "s6_2_e": "San Juan de Dios · San Rafael · Zacamil · ISSS regionals", "s6_3_l": "1st Level", "s6_3_n": "350+", "s6_3_s": "Ambulatory network", "s6_3_x": "Units, community and corporate clinics with high demand for supplies.", "s6_3_e": "UCSF (MINSAL) · ISSS medical units · Community clinics", "s7_eyebrow": "SOLMÉDICA · Private sector", "s7_title": "Segmenting the private network.", "s7_lead": "We classify private centers by size and complexity to focus the portfolio and service on the highest-value accounts.", "s7_1_l": "High complexity", "s7_1_s": "Premium hospitals", "s7_1_x": "Large private hospitals with a broad range of specialties, surgery and inpatient care.", "s7_1_e": "Hospital de Diagnóstico · Especialidades La Paz · Centro Ginecológico", "s7_2_l": "Intermediate", "s7_2_s": "General hospitals", "s7_2_x": "Mid-sized centers with surgery, emergency and general inpatient services.", "s7_2_e": "Centro Médico Lourdes · Hospital Bautista · Emergencias Merliot", "s7_3_l": "Specialized", "s7_3_s": "Clinics & niche", "s7_3_x": "Maternity, ophthalmology, audiology and high-value specialty centers.", "s7_3_e": "Ophthalmology · Private maternity units · Specialty centers", "s8_eyebrow": "Our portfolio", "s8_title": "International brands we represent.", "s8_lead": "A global portfolio brought together under a single supplier, with local technical and after-sales support.", "b1": "Supplies & disposables", "b1c": "USA", "b2": "Disposables & respiratory", "b2c": "India", "b3": "Disposables & medical apparel", "b3c": "Ecuador", "b4": "Pharmaceutical line", "b4c": "Argentina", "b5": "Antiseptics & wound care", "b5c": "Mexico", "b6": "Infusion therapy", "b6c": "Brazil", "b7": "Audiology diagnostics", "b7c": "USA", "b8": "Hearing solutions", "b8c": "USA", "b9": "Sutures & surgical closure", "b9c": "China", "s9_eyebrow": "Product lines", "s9_title": "Core verticals of specialization.", "s9_lead": "A broad portfolio for the OR, inpatient care, diagnostics and ambulatory care.", "l1t": "Supplies & disposables", "l1p": "Wound-care materials, disposables and supplies for patient care.", "l2t": "Surgery & closure", "l2p": "Sutures, hemostasis and wound-closure materials for the OR.", "l3t": "Infusion therapy", "l3p": "Pumps and equipment for controlled delivery of medication and fluids.", "l4t": "Audiology & diagnostics", "l4p": "Audiometers, tympanometers and hearing-diagnostic equipment.", "l5t": "Hearing solutions", "l5p": "Hearing aids and assistive hearing technology.", "l6t": "Pharmaceutical & wound care", "l6p": "Antiseptics, solutions and products for wound care.", "s10_eyebrow": "Why choose us", "s10_title": "Our strengths.", "w1t": "Proven track record", "w1p": "Over 75 years of accumulated experience in El Salvador's healthcare market, from Droguería BSA (1950) to today.", "w2t": "Full national coverage", "w2p": "Present across the entire public and private network, in all 14 departments.", "w3t": "International representation", "w3p": "Leading brands from the USA, Brazil, India, Mexico, China and Ecuador in one portfolio.", "w4t": "Regulatory compliance", "w4p": "Products and processes aligned with health and public-procurement regulations.", "w5t": "Technical & after-sales support", "w5p": "Installation, training and maintenance of the medical equipment we supply.", "w6t": "Logistics & supply", "w6p": "Responsiveness and continuity of supply for large volumes.", "s11_eyebrow": "Why choose us", "s11_title": "The Foundations of Our Leadership.", "s11_lead": "We are not merely importers and distributors: we are experts in our verticals, with deep knowledge of the Salvadoran market and of the whole Central American region.", "vp1t": "Leaders in our verticals", "vp1p": "Over 20 years leading key categories —supplies & disposables, audiology, pharmaceutical & wound care—. Subject-matter experts, with leadership averaging 35+ years of industry experience.", "vp2t": "Regional depth", "vp2p": "We know El Salvador and Central America. Our roots are embedded across the region and we already have a broad network of hospitals and pharmacies we work with or are in talks with.", "vp3t": "End-to-end support", "vp3p": "We run the process end to end —from installation and training to technical support and after-sales— so every client feels in control and in good hands.", "cim_rep_t": "Exclusive international representation", "cim_rep_p": "Leading brands from the USA, Brazil, India, Mexico, China and Ecuador, several under exclusive representation for the country.", "cim_cert_t": "Certification & regulatory compliance", "cim_cert_p": "Our products and processes are aligned, approved and certified in accordance with health and public-procurement regulations.", "vp4t": "Capacity & scale", "vp4p": "The liquidity to take on mandates of any size at large scale and to develop brands across the region through channels we have built over many years.", "s12_eyebrow": "Our team", "s12_title": "A structure built to scale.", "s12_lead": "A team organized to sustain a national dual-mandate operation and to open new markets and representations.", "t_count_l": "Team members", "t_count_n": "110+", "t_ceo": "General Management", "t_ceo_s": "CEO", "t_cfo": "Finance", "t_cfo_s": "CFO", "t_coo": "Operations", "t_coo_s": "COO", "t_cgo": "Strategy & Development", "t_cgo_s": "Direction · CGO", "t_fin": "Finance & Administration", "t_fin_s": "Lead + team of 3–4", "t_comp": "Compliance & Regulatory Affairs", "t_comp_s": "Lead + team of 3–4", "t_pr": "Public Relations & Marketing", "t_pr_s": "Lead + team of 3–4", "t_growth": "Business Development", "t_growth_s": "New brands & opportunities · 3–4", "t_log": "Logistics & Supply", "t_log_s": "Team of 20+ members", "t_comm": "Commercial management", "t_comm_s": "Under COO · coverage across all 14 departments", "t_pub": "Public sector · APAMO", "t_priv": "Private sector · SOLMÉDICA", "t_dept": "14 departments", "t_field": "3 sales + 2 after-sales per department", "t_foot": "Reference structure; team sizes adjust by the volume of each account and region.", "s13_eyebrow": "Our values", "s13_title": "A family company, with a human purpose.", "vl1t": "Service", "vl1p": "Dedication, closeness and human warmth.", "vl2t": "Commitment", "vl2p": "Responsibility and passion in every project.", "vl3t": "Excellence", "vl3p": "Continuous improvement, every day.", "vl4t": "Integrity", "vl4p": "Honesty and ethics in all we do.", "vl5t": "Humanity", "vl5p": "Serving the community and saving lives.", "vl6t": "Trust", "vl6p": "Reliability, transparency and empathy.", "s13_clients": "Those who trust us", "s14_eyebrow": "Track record & projection", "s14_title": "From El Salvador to Central America.", "s14_lead": "With a consolidated national operation and proven market leadership, APAMO's next step is to bring the dual-mandate model to the region's underserved markets.", "s14_from_t": "Where we come from", "s14_from_x": "A national dual-mandate operation in El Salvador: over 75 years of experience, full coverage and market leadership.", "s14_to_t": "Where we're going", "s14_to_x": "Our own operations across Central America, focused on the CA-4 and Panama: markets with underserved needs in medical devices and equipment.", "s14_stat1": "≈46M", "s14_stat1l": "people in the CA-4 + Panama", "s14_stat2": "5", "s14_stat2l": "target markets", "s14_stat3": "75+", "s14_stat3l": "years of know-how to export", "s14_plan": "5-year plan", "s14_y1": "Year 1", "s14_y1x": "Consolidation & regional platform", "s14_y2": "Year 2", "s14_y2x": "Open operations in Guatemala and Panama", "s14_y3": "Year 3", "s14_y3x": "Expansion into Honduras and Nicaragua", "s14_y4": "Year 4", "s14_y4x": "Entry into Honduras", "s14_y5": "Year 5", "s14_y5x": "Nicaragua and regional consolidation", "s14_l_pop": "Pop.", "s14_l_pub": "Public hosp.", "s14_l_priv": "Private hosp.", "s14_l_pharm": "Pharmacies", "s14_est_note": "Estimated market figures, subject to validation.", "cty_sv": "El Salvador", "cty_gt": "Guatemala", "cty_hn": "Honduras", "cty_ni": "Nicaragua", "cty_pa": "Panama", "s15_eyebrow": "Contact", "s15_title": "Your partner in medical devices and equipment for El Salvador's entire health network.", "c_phone": "Phone", "c_web": "Websites", "c_addr": "Address", "c_addr_v": "Calle El Mirador y Pasaje Domingo Santos #110, Col. Escalón, San Salvador, El Salvador", "c_thanks": "Medical infrastructure supporting the mission to save lives.", "foot": "Medical devices & equipment · El Salvador"}};
+(function(){
+  const stage = document.getElementById('stage');
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let cur = 0, lang = 'es';
+
+  // ---------- language ----------
+  function applyLang(l){
+    lang = l;
+    document.documentElement.lang = l;
+    const dict = I18N[l] || {};
+    document.querySelectorAll('[data-k]').forEach(el=>{
+      const k = el.getAttribute('data-k');
+      if(dict[k] !== undefined) el.innerHTML = dict[k];
+    });
+    const lt = document.getElementById('langToggle');
+    lt.setAttribute('data-lang', l);
+    document.getElementById('prevBtn').setAttribute('aria-label', dict.ui_prev||'Prev');
+    document.getElementById('nextBtn').setAttribute('aria-label', dict.ui_next||'Next');
+  }
+  const langToggle = document.getElementById('langToggle');
+  function toggleLang(){ applyLang(lang==='es'?'en':'es'); }
+  langToggle.addEventListener('click', toggleLang);
+  langToggle.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleLang();}});
+  langToggle.querySelector('button.es').addEventListener('click', e=>{e.stopPropagation();applyLang('es');});
+  langToggle.querySelector('button.en').addEventListener('click', e=>{e.stopPropagation();applyLang('en');});
+
+  // ---------- counters ----------
+  function runCounters(slide){
+    slide.querySelectorAll('[data-count]').forEach(el=>{
+      const target = parseFloat(el.getAttribute('data-count'));
+      const suf = el.getAttribute('data-suffix')||'';
+      const dur = 1300, t0 = performance.now();
+      function tick(now){
+        const p = Math.min((now-t0)/dur, 1);
+        const e = 1-Math.pow(1-p,3);
+        el.textContent = Math.round(target*e) + (p===1?suf:'');
+        if(p<1) requestAnimationFrame(tick);
+        else el.textContent = target + suf;
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  // ---------- slide nav ----------
+  function showSlide(i){
+    i = Math.max(0, Math.min(total-1, i));
+    cur = i;
+    slides.forEach((s,idx)=>{
+      const on = idx===i;
+      s.classList.toggle('active', on);
+      if(!on) s.classList.remove('show');
+    });
+    const slide = slides[i];
+    // stagger reveal
+    const rvs = slide.querySelectorAll('.rv');
+    rvs.forEach((el,k)=> el.style.animationDelay = (k*70)+'ms');
+    void slide.offsetWidth;            // reflow → restart animations
+    slide.classList.add('show');
+    // counters on coverage slide
+    if(slide.querySelector('[data-count]')) setTimeout(()=>runCounters(slide), 260);
+    // chrome
+    document.getElementById('cur').textContent = String(i+1).padStart(2,'0');
+    document.getElementById('total').textContent = String(total).padStart(2,'0');
+    document.getElementById('progressBar').style.width = (((i+1)/total)*100)+'%';
+    document.getElementById('prevBtn').disabled = (i===0);
+    document.getElementById('nextBtn').disabled = (i===total-1);
+  }
+  const next = ()=>showSlide(cur+1), prev = ()=>showSlide(cur-1);
+  document.getElementById('nextBtn').addEventListener('click', next);
+  document.getElementById('prevBtn').addEventListener('click', prev);
+
+  // ---------- keyboard ----------
+  document.addEventListener('keydown', e=>{
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();next();}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev();}
+    else if(e.key==='Home'){e.preventDefault();showSlide(0);}
+    else if(e.key==='End'){e.preventDefault();showSlide(total-1);}
+    else if(e.key==='f'||e.key==='F'){toggleFs();}
+  });
+
+  // ---------- fullscreen ----------
+  function toggleFs(){
+    if(!document.fullscreenElement){ document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen(); }
+    else { document.exitFullscreen&&document.exitFullscreen(); }
+  }
+  document.getElementById('fsBtn').addEventListener('click', toggleFs);
+
+  // ---------- scaling ----------
+  function fit(){
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const scale = Math.min(vw/1280, vh/720);
+    stage.style.transform = 'scale('+scale+')';
+  }
+  window.addEventListener('resize', fit);
+
+  // ---------- swipe (touch) ----------
+  let tx=0;
+  document.addEventListener('touchstart', e=>{ tx=e.changedTouches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', e=>{
+    const dx = e.changedTouches[0].clientX - tx;
+    if(Math.abs(dx)>60){ dx<0?next():prev(); }
+  }, {passive:true});
+
+  // ---------- init ----------
+  applyLang('es');
+  fit();
+  showSlide(0);
+})();
+
+</script>
+</body>
+</html>
